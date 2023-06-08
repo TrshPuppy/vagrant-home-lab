@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 # Load Vim config from /configs
 	echo "configuring vim..."

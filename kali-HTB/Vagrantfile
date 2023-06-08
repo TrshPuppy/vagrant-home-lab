@@ -13,8 +13,8 @@
 # vi: set ft=ruby :
 
 # Some variables you might want to change later:
-HOME_CONFIG_DIR = "/r/a-trshp-does-windows/Vagrant/kali-HTB/configs"
-VM_CONFIG_DIR = "~/home/vagrant/configs"
+HOME_CONFIG_DIR = "./configs"
+VM_CONFIG_DIR = "/home/vagrant/configs"
 
 # / ****************** Start the Madness: ****************** /
 Vagrant.configure("2") do |config|
@@ -28,8 +28,8 @@ Vagrant.configure("2") do |config|
     config.vm.synced_folder ".", "/vagrant", disabled: true
 	
 	# Give our box some config files, to make these real nice and automated:
-#	config.vm.synced_folder HOME_CONFIG_DIR, VM_CONFIG_DIR 
-config.vm.synced_folder HOME_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
+	config.vm.synced_folder HOME_CONFIG_DIR, VM_CONFIG_DIR 
+#config.vm.synced_folder HOME_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
 
 #
  # / ****************** VirtualBox Configs ****************** /
