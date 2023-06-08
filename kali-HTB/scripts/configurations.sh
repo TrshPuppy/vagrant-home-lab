@@ -10,5 +10,5 @@
 	mkdir .vim/plugged
 
 	echo "Copying over .vimrc..."
-	sudo cp ~/home/vagrant/configs/.vimrc ~.vimrc
+	sudo cp ~/home/vagrant/configs/.vimrc ~/.vimrc
 
