@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# Add banner so we can tell what's happening:
+echo "/ ******************************* STARTING INSTALL_TOOLS.SH ******************************* \\"
+
 # Install git:
 	echo "Installing git..."
-	sudo apt install git -y
+	sudo -qq apt install git -y
 
 # Pimp My Kali:
 	echo "Installing Pimp my Kali..."

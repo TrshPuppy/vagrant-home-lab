@@ -1,66 +1,72 @@
-# / ****************** TrshPuppy Custom notes:  ****************** /
-# /              * This file is for my HTB kali box
-# /              * Fashioned after my PNPT box
-# /                       (b/c I'm n00b)
-# / 
-# / Some notes:
-# 		- Checkout vagrant/Vagrantfile for default Vagrantfile to work off of
-# 		- Checkout kali-HTB/scripts for scripts this Vfile will use
-# 		-
-# /  ******************   ******************   ****************** /
-
+# 
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 # Some variables you might want to change later:
-HOME_CONFIG_DIR = "./configs"
+HOME_CONFIG_DIR = "./configs" 
 VM_CONFIG_DIR = "/home/vagrant/configs"
+
+HOME_SCRIPTS_DIR = "scripts"
+VM_SCRIPTS_DIR = "/home/vagrant/scripts"
+VM_SHELL_PATH = "/usr/bin/zsh"
 
 # / ****************** Start the Madness: ****************** /
 Vagrant.configure("2") do |config|
-	# This is our box:
-	config.vm.box = "kalilinux/rolling" 
 
- 	# We want it to update: 
-    config.vm.box_check_update = true
+  # This is our box:
+  config.vm.box = "kalilinux/rolling" 
 
-	# We don't want the VM to access our Vfile:
-    config.vm.synced_folder ".", "/vagrant", disabled: true
-	
-	# Give our box some config files, to make these real nice and automated:
-	config.vm.synced_folder HOME_CONFIG_DIR, VM_CONFIG_DIR 
-#config.vm.synced_folder HOME_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
+  # We want it to update: 
+  config.vm.box_check_update = true
 
-#
- # / ****************** VirtualBox Configs ****************** /
-	config.vm.provider "virtualbox" do |vb|
-		vb.name = "kali-HTB"
+  # We don't want the VM to access our Vfile:
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Give our box some config files, to make these real nice and automated:
+  #	config.vm.synced_folder HOME_CONFIG_DIR, VM_CONFIG_DIR 
+  config.vm.synced_folder HOME_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
+  config.vm.synced_folder HOME_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
+  
+# / ****************** VirtualBox Configs ****************** /
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "kali-HTB"
 		
-		# Display the VirtualBox GUI when booting the machine
-		vb.gui = true
+	# Display the VirtualBox GUI when booting the machine
+	vb.gui = true
 	 
-		# Customize the amount of memory on the VM:
-		vb.memory = "16000"
-		vb.cpus = 6
+	# Customize the amount of memory on the VM:
+	vb.memory = "16000"
+	vb.cpus = 6
 
-		# This next thing doesn't seem to be working (for now):
-		# vb.customize ["modifyvm", :id, "--cpuexecutioncap","80"]
+	# This next thing doesn't seem to be working (for now):
+	# vb.customize ["modifyvm", :id, "--cpuexecutioncap","80"]
 	
-	 end 
+  end 
 # / ****************** VBox End ****************** /
 
 # / ****************** TP Custom: ****************** /
 	# SSH & X11 stuff and things:
-	config.ssh.forward_x11 = true
+    #	config.ssh.forward_x11 = true
 	#  config.ssh.host = "127.0.0.1"
 	#  config.ssh.port = 8008
 
 # / ****************** Custom End ****************** /
 
 # / ****************** Provisioning: ****************** /
-	config.vm.provision "shell", path: "scripts/maintenance.sh", privileged: true 
-	config.vm.provision "shell", path: "scripts/install_tools.sh", privileged: true
-	config.vm.provision "shell", path: "scripts/configurations.sh", privileged: true
+	# config.vm.provision "shell" do |s|
+	#	s.path = "scripts/maintenance.sh"
+	#	s.privileged = true
+	#	s.upload_path = "c/Users/rosep/AppData/Local/Temp/vagrant-shell"
+	#end
+    #  config.vm.provision "shell", path: "scripts/maintenance.sh"	
+	# config.vm.provision "shell", path: "scripts/install_tools.sh", privileged: true
+	# hhconfig.vm.provision "shell", path: "scripts/configurations.sh", privileged: true
+    
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/maintenance.sh"
+    
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
 
 # / ****************** Provisioning End ****************** / 
 
