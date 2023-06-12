@@ -1,0 +1,73 @@
+# 
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Some variables you might want to change later:
+HOST_SHARED_SCRIPTS_DIR = "../shared-scripts"
+VM_SHARED_SCRIPTS_DIR = "/home/vagrant/shared-scripts"
+
+HOST_CONFIG_DIR = "configs" 
+VM_CONFIG_DIR = "/home/vagrant/configs"
+
+HOST_SCRIPTS_DIR = "scripts"
+VM_SCRIPTS_DIR = "/home/vagrant/scripts"
+VM_SHELL_PATH = "/usr/bin/sh"
+
+# / ****************** Start the Madness: ****************** /
+Vagrant.configure("2") do |config|
+
+  # This is our box:
+  config.vm.box = "ubuntu/focal64" 
+
+  # We want it to update: 
+  config.vm.box_check_update = true
+
+  # We don't want the VM to access our Vfile:
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Give our box some config files, to make these real nice and automated:
+  config.vm.synced_folder HOST_SHARED_SCRIPTS_DIR, VM_SHARED_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false 
+  config.vm.synced_folder HOST_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
+  config.vm.synced_folder HOST_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
+  
+# / ****************** VirtualBox Configs ****************** /
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "ubuntu-dev"
+		
+	# Display the VirtualBox GUI when booting the machine
+	vb.gui = true
+	 
+	# Customize the amount of memory on the VM:
+	vb.memory = "16000"
+	vb.cpus = 6
+
+	# This next thing doesn't seem to be working (for now):
+	# vb.customize ["modifyvm", :id, "--cpuexecutioncap","80"]
+	
+  end 
+# / ****************** VBox End ****************** /
+
+# / ****************** TP Custom: ****************** /
+	# SSH & X11 stuff and things:
+    #	config.ssh.forward_x11 = true
+	#  config.ssh.host = "127.0.0.1"
+	#  config.ssh.port = 8008
+
+# / ****************** Custom End ****************** /
+
+# / ****************** Provisioning: ****************** /
+  
+  # Shared Scripts:
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
+    
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/install_shared_tools.sh"
+
+  # Dev lab specific:
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
+
+# / ****************** Provisioning End ****************** / 
+
+end
