@@ -18,9 +18,8 @@ VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
 VM_SHELL_PATH = "/usr/bin/zsh"
 
   # New User:
-  USER_NAME = "hakcypuppy"
-  USER_HOME = "/home/$user"
-
+  user = "hakcypuppy"
+  user_home = "/home/$user"
 
 # / ****************** Start the Madness: ****************** /
 Vagrant.configure("2") do |config|
