@@ -6,6 +6,9 @@
 HOST_SHARED_SCRIPTS_DIR = "../shared-scripts"
 VM_SHARED_SCRIPTS_DIR = "/home/vagrant/shared-scripts"
 
+HOST_SHARED_CONFIGS_DIR = "../shared-configs"
+VM_SHARED_CONFIGS_DIR = "/home/vagrant/shared-configs"
+
 HOST_CONFIG_DIR = "configs" 
 VM_CONFIG_DIR = "/home/vagrant/configs"
 
@@ -26,6 +29,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Give our box some config files, to make these real nice and automated:
+  config.vm.synced_folder HOST_SHARED_CONFIGS_DIR, VM_SHARED_CONFIGS_DIR, SharedFoldersEnableSymlinksCreate: false
   config.vm.synced_folder HOST_SHARED_SCRIPTS_DIR, VM_SHARED_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false 
   config.vm.synced_folder HOST_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
   config.vm.synced_folder HOST_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
@@ -56,26 +60,21 @@ Vagrant.configure("2") do |config|
 # / ****************** Custom End ****************** /
 
 # / ****************** Provisioning: ****************** /
-	# config.vm.provision "shell" do |s|
-	#	s.path = "scripts/maintenance.sh"
-	#	s.privileged = true
-	#	s.upload_path = "c/Users/rosep/AppData/Local/Temp/vagrant-shell"
-	#end
-    #  config.vm.provision "shell", path: "scripts/maintenance.sh"	
-	# config.vm.provision "shell", path: "scripts/install_tools.sh", privileged: true
-	# hhconfig.vm.provision "shell", path: "scripts/configurations.sh", privileged: true
-  
+ 
+ # We want to add our configure files before we install tools (probably):
+  # Config scripts:
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/configure.sh"
+
+
   # Shared Scripts:
     config.vm.provision "shell",
       inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
 
     config.vm.provision "shell",
       inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/install_shared_tools.sh"
-      
-
-  # config.vm.provision "shell",
-  #    jnline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/maintenance.sh"
-    
+   
+  # Kaliu lab specific:
     config.vm.provision "shell",
       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
 
