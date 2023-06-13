@@ -45,9 +45,9 @@ installed_tools=("git" "vim")
 	# Check for config files in user home dir:
 	if [[ "$user_exists" == "true" ]]; then
 		for f in $user_home_files; do
-			f_exists=$(ls -a $user_home | grep f -c)
+			f_exists=$(ls -a $user_home | grep $f -c)
 
-			if [[ f_exists -eq 1 ]]; then 
+			if [[ $f_exists -eq 1 ]]; then 
 				continue
 			else
 				echo "ERROR: file $f is not present in $user_home"
@@ -62,7 +62,7 @@ installed_tools=("git" "vim")
 	for t in $installed_tools; do
 		t_exists=$(dpkg -s $t | grep "install ok installed" -c)
 
-		if [[ t_exists -eq 1 ]]; then
+		if [[ $t_exists -eq 1 ]]; then
 			continue
 		else
 			echo "ERROR: tool $t was not installed"
