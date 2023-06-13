@@ -4,17 +4,23 @@
 
 # Some variables you might want to change later:
 HOST_SHARED_SCRIPTS_DIR = "../shared-scripts"
-VM_SHARED_SCRIPTS_DIR = "/home/vagrant/shared-scripts"
+#VM_SHARED_SCRIPTS_DIR = "/home/vagrant/shared-scripts"
+VM_SHARED_SCRIPTS_DIR = "/tmp/vagrant/shared-scripts"
 
 HOST_SHARED_CONFIGS_DIR = "../shared-configs"
-VM_SHARED_CONFIGS_DIR = "/home/vagrant/shared-configs"
+VM_SHARED_CONFIGS_DIR = "/tmp/vagrant/shared-configs"
 
 HOST_CONFIG_DIR = "configs" 
-VM_CONFIG_DIR = "/home/vagrant/configs"
+VM_CONFIG_DIR = "/tmp/vagrant/configs"
 
 HOST_SCRIPTS_DIR = "scripts"
-VM_SCRIPTS_DIR = "/home/vagrant/scripts"
+VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
 VM_SHELL_PATH = "/usr/bin/zsh"
+
+  # New User:
+  USER_NAME = "hakcypuppy"
+  USER_HOME = "/home/$user"
+
 
 # / ****************** Start the Madness: ****************** /
 Vagrant.configure("2") do |config|
@@ -61,11 +67,12 @@ Vagrant.configure("2") do |config|
 
 # / ****************** Provisioning: ****************** /
  
- # We want to add our configure files before we install tools (probably):
+  # We want to add our configure files before we install tools because configure.sh will make our user etc..:
+  # Each script starts and ends w/ "cd /home/vagrant" to make it easy
+
   # Config scripts:
     config.vm.provision "shell",
       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/configure.sh"
-
 
   # Shared Scripts:
     config.vm.provision "shell",
@@ -74,7 +81,7 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell",
       inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/install_shared_tools.sh"
    
-  # Kaliu lab specific:
+  # Kali lab specific:
     config.vm.provision "shell",
       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
 
@@ -82,5 +89,11 @@ Vagrant.configure("2") do |config|
       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_pmk.sh"
 
 # / ****************** Provisioning End ****************** / 
+
+# / ****************** Testing Script ****************** / 
+
+  # Script to run after provisioning to see if everything worked:
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/post_build_tests.sh"
 
 end
