@@ -1,6 +1,8 @@
 # Custom
 bin
 embedded
+passy.txt
+*/passy.txt
 
 # OS-specific
 .DS_Store
