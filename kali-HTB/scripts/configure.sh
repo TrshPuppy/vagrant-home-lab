@@ -28,7 +28,7 @@ echo ":           ---------- ---------- Adding New User ---------- ----------   
 
 # Load Vim config from /configs:
 echo ":           ---------- ---------- Configuring Vim ---------- ----------           :"
-	echo "                           adding files and dirs...                            "
+	echo ":                          adding files and dirs...                           :"
 	cd $user_home
 	mkdir .vim
 	mkdir .vim/autoload
@@ -36,7 +36,7 @@ echo ":           ---------- ---------- Configuring Vim ---------- ----------   
 	mkdir .vim/colors
 	mkdir .vim/plugged
 
-	echo "                            copying over ,vimrc...                             "
+	echo ":                           copying over .vimrc...                            :"
 #	sudo cp /home/vagrant/shared-configs/.vimrc $user_home/.vimrc
 	sudo cp /tmp/vagrant/shared-configs/.vimrc $user_home/.vimrc
 
