@@ -18,7 +18,7 @@ user_home_files=(".vimrc")
 installed_tools=("git" "vim")
 
 # Check for user and user directories:
-echo "                                        Checking for user config..."
+echo "                                        checking for user config..."
 	target_user=$(sudo cat /etc/passwd | grep $user -c)
 
 	if [[ $target_user -eq 1 ]]; then
@@ -30,7 +30,7 @@ echo "                                        Checking for user config..."
 		error_count+=1
 	fi
 
-echo "                                        Checking user is sudo..."
+echo "                                        checking user is sudo..."
 	# Check that user is in sudo group:
 	if [[ "$user_exists" == "true" ]]; then
 		exists_in_sudoers=$(cat /etc/group | grep "sudo" | grep $user -c)
@@ -43,7 +43,7 @@ echo "                                        Checking user is sudo..."
 		fi
 	fi
 
-echo "                                       Checking for config  files in user home..."
+echo "                                        checking for config  files in user home..."
 	# Check for config files in user home dir:
 	if [[ "$user_exists" == "true" ]]; then
 		for f in $user_home_files; do
@@ -59,7 +59,7 @@ echo "                                       Checking for config  files in user 
 		done
 	fi
 
-echo "                                      Checking that tools installed successfully..."
+echo "                                        checking that tools installed successfully..."
 # Check that tools were installed:	
 	for t in $installed_tools; do
 		t_exists=$(dpkg -s $t | grep "install ok installed" -c)
@@ -76,7 +76,7 @@ echo "                                      Checking that tools installed succes
 # Check vagrant home directory:
 	# eh.... mayber later
 
-echo "                                      Checking for deleted pass.txt"
+echo "                                        checking for deleted pass.txt"
 # Check that pass was deleted:
 	p_exists=$(ls /tmp/vagrant/configs | grep "pass.txt" -c)
 
@@ -89,4 +89,4 @@ echo "                                              pass.txt successfully delete
 	
 # Finishing up:
 cd /home/vagrant
-echo "                        ---------- Exiting Tests w/ $error_count Errors ----------"
+echo "                                   Finished: exiting Tests w/ $error_count Errors"

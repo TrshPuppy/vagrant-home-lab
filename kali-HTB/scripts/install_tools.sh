@@ -7,6 +7,6 @@ declare -i tools_installed=0
 echo "                        --------- STARTING INSTALL_TOOLS.SH"
 cd /home/vagrant
 
-echo "                                      finished: $tools_installed tools installed"
+echo "                                  Finished: $tools_installed tools installed"
 # Finishing up:
 cd /home/vagrant

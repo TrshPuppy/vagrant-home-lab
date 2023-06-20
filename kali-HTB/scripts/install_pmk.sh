@@ -17,7 +17,6 @@ echo "                                        installing pimp my kali..."
 	sudo ./pimpmykali.sh --auto
 #	sudo ./pimpmykali.sh --help
 
-echo "                                        finished: pmk installed"
-
+echo "                                        Finished: pmk installed"
 # Finishing up:
 cd /home/vagrant
