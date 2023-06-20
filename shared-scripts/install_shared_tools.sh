@@ -1,7 +1,10 @@
-#!/bin/bash
+#!/bin/zsh
+
+# Some globals:
+declare -i tools_installed=0
 
 # Add banner so we can tell what's happening:
-echo "/ ******************************* STARTING INSTALL_SHARED_TOOLS.SH ******************************* \\"
+echo "                        ---------- STARTING INSTALL_SHARED_TOOLS.SH ----------"
 
 # Cuz I'm queen of making shit complicated, find out who our user is from a safe starting point:
 	cd /home/vagrant
@@ -15,35 +18,39 @@ check_for_apt_package(){
 	else
 		installed=1
 	fi
-
-	return $installed
+return $installed
 }
 
 cd /home/$target_user
 
-echo "           ---------- ---------- installing git... ---------- -----------            "
+echo "                                       installing git..."
 	# Install git:
 		# Check for git:
 		check_for_apt_package "git"
 		result_git=$?
 
 	if [[ $result_git -eq 0 ]]; then
-		sudo apt install git -y
+		echo "                                           git not found, installing..."
+		sudo apt install git -yi
+		tools_installed+=1
 	else
-		echo "... ... ... git already installed ... ... ..."
+		echo "                                           git already installed"
 	fi
 
-echo "           ---------- ---------- installing vim... ---------- -----------            "
+echo "                                       installing vim..."
 	# Install Vim:
 		# Check for vim:
 		check_for_apt_package "vim"
 		result=$?
 
 	if [[ $result -eq 0 ]]; then
+		echo "                                           vim not found, installing..."
 		sudo apt install vim -y
+		tools_installed+=1
 	else
-		echo "... ... ... vim already installed ... ... ..."
+		echo "                                           vim already installed"
 	fi
 
+echo "                                    Finished: $tools_installed new tools installed."
 # Finishing up:
 cd /home/vagrant
