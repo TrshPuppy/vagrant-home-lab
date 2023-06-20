@@ -14,8 +14,8 @@ echo "           ---------- ---------- installing pimp my kali... ---------- ---
 	git clone https://github.com/TrshPuppy/pimpmykali-autopilot.git pimpmykali
 	cd $user_home/pimpmykali
 	
-	# sudo ./pimpmykali.sh --auto
-	sudo ./pimpmykali.sh --help
+	sudo ./pimpmykali.sh --auto
+#	sudo ./pimpmykali.sh --help
 
 # Finishing up:
 cd /home/vagrant
