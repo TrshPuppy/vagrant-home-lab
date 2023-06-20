@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Add banner so we can tell what's happening:
-echo "                        ---------- STARTING CONFIGURE.SH ----------"
+# Banner:
+echo "                         ---------- STARTING CONFIGURE.SH"
 
 # Some globals:
 VM_CONFIGS_DIR="/home/vagrant/configs"
 VM_SHARED_CONFIGS_DIR="/home/vagrant/shared-configs"
 
 # Load Vim config from /configs
-echo "                                      creating vim env..."
+echo "                                    ---- creating vim env..."
 	cd ~
 	mkdir .vim
 	mkdir .vim/autoload
