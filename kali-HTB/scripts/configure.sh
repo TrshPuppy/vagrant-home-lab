@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Add banner so we can tell what's happening:
 echo "/ ******************************* STARTING CONFIGURE.SH ******************************* \\"
