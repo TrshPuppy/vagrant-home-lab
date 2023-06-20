@@ -10,27 +10,28 @@ cd /home/vagrant
 	user_pass=$(cat /tmp/vagrant/configs/pass.txt | mkpasswd --stdin)
 	user_home="/home/$user"
 
-# Make a new user:i
+# Make a new user:
 echo "                                       adding user..."
 	# Make sure the user doesn't exist:
 	if cat "/etc/passwd" | grep -c $user; then
-		echo "                                            user $user already exists...skipping..."
+		echo "                                           user $user already exists...skipping..."
 	else
 		sudo useradd -m -p $user_pass -s /bin/bash $user
-		echo "                                            user $user created"	
+		echo "                                           user $user created"	
 	fi
 
-echo "                                       adding to sudo group..."
+	# Add user to sudo group
+	echo "                                       adding to sudo group..."
 	sudo usermod -a -G sudo $user
 
-# Something about delete password file
-echo "                                       removing pass file..."
+	echo "                                       removing pass file..."
 #	sudo rm /home/vagrant/configs/pass.txt
 	sudo rm /tmp/vagrant/configs/pass.txt
+echo "                                       finished: new user added"
 
 # Load Vim config from /configs:
 echo "                                       configuring vim..."
-	echo "                                             adding files and dirs..."
+	echo "                                           adding files and dirs..."
 	cd $user_home
 	mkdir .vim
 	mkdir .vim/autoload
@@ -38,12 +39,11 @@ echo "                                       configuring vim..."
 	mkdir .vim/colors
 	mkdir .vim/plugged
 
-	echo "                                             adding vim configuration file..."
+	echo "                                           adding vim configuration file..."
 #	sudo cp /home/vagrant/shared-configs/.vimrc $user_home/.vimrc
 	sudo cp /tmp/vagrant/shared-configs/.vimrc $user_home/.vimrc
-
 echo "                                       finished: vim installed and configured"
 
 # Finishing up:
-echo "                                     Finished."
+echo "                        ---------- Finished ----------"
 cd /home/vagrant
