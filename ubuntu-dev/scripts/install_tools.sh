@@ -7,7 +7,7 @@
 		#	add cd /home/vagrant  to start and  end?
 
 # Banner:
-echo "                         ---------- STARTING INSTALL_TOOLS.SH"
+echo "                        -------- STARTING INSTALL_TOOLS.SH"
 cd /home/vagrant
 
 # Some globals:
@@ -22,13 +22,13 @@ pain_in_ass_tools=(handle_vs_code)
 # Some useful little functions:
 check_for_apt_package(){
 	# $1 is our package to check:
-	echo "                                             -- checking that $1 doesn't already exist"
+	echo "                                          -- checking that $1 doesn't already exist"
 	if dpkg -s "$1" | grep -q "*not installed"; then
 		installed=0
-		echo "                                         -- $1 not found, installing..."
+		echo "                                      -- $1 not found, installing..."
 	else
 		installed=1
-        echo "                                         -- $1 already installed, skipping."
+        echo "                                      -- $1 already installed, skipping."
 	fi
 return $installed
 }
@@ -55,7 +55,7 @@ handle_vs_code(){
 	fi	
 }
 
-echo "                                    ---- installing tools..."
+echo "                                 ---- installing tools..."
 for t in ${tools_to_install[@]}; do
 	# Check for tool:
 	check_for_apt_package $t
@@ -69,13 +69,13 @@ for t in ${tools_to_install[@]}; do
 	fi
 done
 
-echo "                                    ---- installing pain in ass tools..."
+echo "                                 ---- installing pain in ass tools..."
 for pa in ${pain_in_ass_tools[@]}; do
 	"$pa"
 done
 
 #  Finish up:
-echo "                                    FINISHED: $tools_installed new tools installed."
+echo "                        -------- FINISHED: $tools_installed new tools installed."
 
 # # Add banner so we can tell what's happening:
 # echo "                        ---------- STARTING INSTALL_TOOLS.SH ----------"
