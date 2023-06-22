@@ -1,8 +1,9 @@
 #!/bin/zsh
 
 # Some nice globals:
-	user="devypuppy"
-	user_pass=$(cat /tmp/vagrant/configs/pass.txt | mkpasswd --stdin)
+	user="devpuppy"
+	# user_pass=$(cat /tmp/vagrant/shared-configs/passy.txt | mkpasswd --stdin)
+	user_pass=$(cat /tmp/vagrant/shared-configs/passy.txt)
 	user_home="/home/$user"
 
 # Banner:
@@ -12,7 +13,8 @@ cd /home/vagrant
 # Make a new user:
 echo "                                 ---- adding user..."
 # Make sure the user doesn't exist:
-if cat "/etc/passwd" | grep -c $user; then
+check_for_user=$(cat /etc/passwd | grep -c $user)
+if [[ $check_for_user -eq 1 ]]; then
 	echo "                                      -- user $user already exists...skipping..."
 else
 	sudo useradd -m -p $user_pass -s /bin/bash $user
@@ -25,7 +27,7 @@ sudo usermod -a -G sudo $user
 
 # Remove password file:
 	echo "                                      -- removing pass file..."
-	sudo rm /tmp/vagrant/configs/pass.txt
+	sudo rm /tmp/vagrant/shared-configs/passy.txt
 echo "                                 ---- finished: new user added"
 
 # Load Vim config from /configs:

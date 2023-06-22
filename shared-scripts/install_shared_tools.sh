@@ -28,7 +28,7 @@ install_apt_package(){
 	sudo apt install $1 -y	
 }
 
-cd /home/$target_user
+cd /home/"$target_user"
 echo "                                 ---- installing tools..."
 for t in ${tools_to_install[@]}; do
 	# Check for tool:

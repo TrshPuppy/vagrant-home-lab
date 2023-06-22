@@ -5,6 +5,9 @@ echo "                        -------- STARTING INSTALL_TOOLS.SH"
 cd /home/vagrant
 
 # Some globals:
+user="hakcypuppy"
+user_home="/home/$user"
+
 declare -i tools_installed=0
 tools_to_install=("git" "vim")
 pain_in_ass_tools=()
@@ -12,13 +15,13 @@ pain_in_ass_tools=()
 # Some useful little functions:
 check_for_apt_package(){
 	# $1 is our package to check:
-        echo "                                      -- checking that $1 doesn't already exist"
-	if dpkg -s "$1" | grep -q "*not installed"; then
+    echo "                                      -- checking that $1 doesn't already exist"
+	if dpkg -s "$1" | grep -c "*not installed"; then
 		installed=0
-		echo "                                      -- $1 not found, installing..."
+	echo "                                      -- $1 not found, installing..."
 	else
 		installed=1
-        echo "                                      -- $1 already installed, skipping."
+    echo "                                      -- $1 already installed, skipping."
 	fi
 return $installed
 }
@@ -28,6 +31,8 @@ install_apt_package(){
 }
 
 echo "                                 ---- installing tools..."
+cd $user_home
+
 for t in ${tools_to_install[@]}; do
 	# Check for tool:
 	check_for_apt_package $t

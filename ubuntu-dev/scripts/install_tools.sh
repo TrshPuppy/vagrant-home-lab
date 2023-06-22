@@ -11,8 +11,11 @@ echo "                        -------- STARTING INSTALL_TOOLS.SH"
 cd /home/vagrant
 
 # Some globals:
+user="devpuppy"
+user_home="/home/$user"
+
 declare -i tools_installed=0
-tools_to_install=("--no install recommends ubuntu-desktop" 
+tools_to_install=("ubuntu-desktop" 
 					"firefox" 
 					"software-properties-common" 
 					"apt-transport-https")
@@ -22,8 +25,9 @@ pain_in_ass_tools=(handle_vs_code)
 # Some useful little functions:
 check_for_apt_package(){
 	# $1 is our package to check:
+	check_func=$(apt list --installed | grep -c $1)
 	echo "                                          -- checking that $1 doesn't already exist"
-	if dpkg -s "$1" | grep -q "*not installed"; then
+	if [[ check_func -eq 0 ]]; then
 		installed=0
 		echo "                                      -- $1 not found, installing..."
 	else
@@ -56,6 +60,8 @@ handle_vs_code(){
 }
 
 echo "                                 ---- installing tools..."
+cd $user_home
+
 for t in ${tools_to_install[@]}; do
 	# Check for tool:
 	check_for_apt_package $t
