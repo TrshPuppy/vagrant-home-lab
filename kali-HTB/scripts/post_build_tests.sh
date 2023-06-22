@@ -61,15 +61,27 @@ fi
 
 echo "                                 ---- checking that tools installed successfully..."
 # Check that tools were installed:	
-for t in ${installed_tools[@]}; do
-	t_exists=$(dpkg -s $t | grep "install ok installed" -c)
+# for t in ${installed_tools[@]}; do
+# 	t_exists=$(dpkg -s $t | grep "install ok installed" -c)
 
-	if [[ $t_exists -eq 1 ]]; then
-		echo "                                      -- tool $t exists"
-		continue
-	else
+# 	if [[ $t_exists -eq 1 ]]; then
+# 		echo "                                      -- tool $t exists"
+# 		continue
+# 	else
+# 		echo "                                      -- ERROR: tool $t was not installed"
+# 		error_count+=1	
+# 	fi
+# done
+for t in ${installed_tools[@]}; do
+	# t_exists=$(dpkg -s $t | grep "install ok installed" -c)
+	t_exists=$(apt list --installed | grep -c $t)
+
+	if [[ $t_exists -eq 0 ]]; then
 		echo "                                      -- ERROR: tool $t was not installed"
 		error_count+=1	
+	else
+		echo "                                      -- tool $t exists"
+		continue
 	fi
 done
 
