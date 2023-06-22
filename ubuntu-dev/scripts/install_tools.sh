@@ -26,13 +26,13 @@ pain_in_ass_tools=(handle_vs_code)
 check_for_apt_package(){
 	# $1 is our package to check:
 	check_func=$(apt list --installed | grep -c $1)
-	echo "                                          -- checking that $1 doesn't already exist"
+	echo "                                      -- checking that $1 doesn't already exist"
 	if [[ check_func -eq 0 ]]; then
 		installed=0
-		echo "                                      -- $1 not found, installing..."
+		echo "                                  -- $1 not found, installing..."
 	else
 		installed=1
-        echo "                                      -- $1 already installed, skipping."
+        echo "                                  -- $1 already installed, skipping."
 	fi
 return $installed
 }
