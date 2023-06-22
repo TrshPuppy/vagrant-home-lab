@@ -7,6 +7,7 @@ cd /home/vagrant
 # Some globals:
 declare -i tools_installed=0
 tools_to_install=("git" "vim")
+pain_in_ass_tools=()
 	
 # Some useful little functions:
 check_for_apt_package(){
@@ -38,6 +39,11 @@ for t in ${tools_to_install[@]}; do
 	else
 		continue
 	fi
+done
+
+echo "                                 ---- installing pain in ass tools..."
+for pa in ${pain_in_ass_tools[@]}; do
+	"$pa"
 done
 
 # Finishing up:
