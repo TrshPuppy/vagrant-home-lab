@@ -15,7 +15,13 @@ vag_user="vagrant"
 vag_home="/home/vagrant"
 
 user_home_files=(".vimrc")
-installed_tools=("git" "vim")
+installed_tools=("git" 
+				 "vim" 
+				 "code" 
+				 "ubuntu-desktop" 
+				 "firefox" 
+				 "software-properties-common" 
+				 "apt-transport-https")
 
 # Check for user and user directories:
 echo "                                 ---- checking for user config..."
