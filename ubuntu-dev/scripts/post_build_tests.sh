@@ -8,7 +8,7 @@ cd /home/vagrant
 # Some globals:
 declare -i error_count=0
 
-user="hakcypuppy"
+user="devpuppy"
 user_home="/home/$user"
 
 vag_user="vagrant"
@@ -76,15 +76,15 @@ done
 # Check vagrant home directory:
 	# eh.... mayber later
 
-echo "                                 ---- checking for deleted pass.txt"
+echo "                                 ---- checking for deleted passy.txt"
 # Check that pass was deleted:
-p_exists=$(ls /tmp/vagrant/configs | grep "pass.txt" -c)
+p_exists=$(ls /tmp/vagrant/shared-configs | grep "passy.txt" -c)
 
 if [[ $p_exists -eq 1 ]]; then
-	echo "                                      -- ERROR:  pass.txt not deleted from /tmp/vagrant/configs"
+	echo "                                      -- ERROR:  passy.txt not deleted from /tmp/vagrant/configs"
 	error_count+=1
 else
-	echo "                                      -- pass.txt successfully deleted"
+	echo "                                      -- passy.txt successfully deleted"
 fi
 	
 # Finishing up:
