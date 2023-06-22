@@ -17,8 +17,8 @@ else
 	echo  "                                     -- pmk not present, installing..."	
 	git clone https://github.com/TrshPuppy/pimpmykali-autopilot.git pimpmykali
 	cd $user_home/pimpmykali	
-    #	sudo ./pimpmykali.sh --auto
-	sudo ./pimpmykali.sh --help
+   	sudo ./pimpmykali.sh --auto
+#	sudo ./pimpmykali.sh --help
 fi
 echo "                                 ---- Finished: pmk installed"
 
