@@ -9,6 +9,8 @@ declare -i tools_installed=0
 # Cuz I'm queen of making shit complicated, find out who our user is from a safe starting point:
 target_user=$(cat /etc/passwd | grep "puppy" | cut -d ":" -f 1)
 tools_to_install=("git" "vim")
+
+pain_in_ass_tools=(handle_golang)
 	
 # Some useful little functions:
 check_for_apt_package(){
@@ -41,6 +43,10 @@ install_apt_package(){
 	sudo apt install $1 -y	
 }
 
+handle_golang(){
+	
+}
+
 cd /home/"$target_user"
 echo "                                 ---- installing tools..."
 for t in ${tools_to_install[@]}; do
@@ -54,6 +60,11 @@ for t in ${tools_to_install[@]}; do
 	else
 		continue
 	fi
+done
+
+echo "                                 ---- installing pain in ass tools..."
+for pa in ${pain_in_ass_tools[@]}; do
+	"$pa"
 done
 
 # Finishing up:
