@@ -16,9 +16,9 @@ user_home="/home/$user"
 
 declare -i tools_installed=0
 tools_to_install=("ubuntu-desktop" 
-					"firefox" 
-					"software-properties-common" 
-					"apt-transport-https")
+				  "firefox" 
+				  "software-properties-common" 
+				  "apt-transport-https")
 
 pain_in_ass_tools=(handle_vs_code)
 	
@@ -59,13 +59,6 @@ handle_vs_code(){
 
 		sudo apt update
 		sudo apt install code
-		# sudo apt-get install -y wget gpg
-		# wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-		# sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-		# sudo sh -c 'echo "deb [arch=amd64, arm64, armhf, signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-		# rm -f packages.microsoft.gpg
-		# sudo apt update
-		# sudo apt install code	
 		tools_installed+=1
 	fi	
 }

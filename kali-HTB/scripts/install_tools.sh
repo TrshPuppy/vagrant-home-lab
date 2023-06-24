@@ -15,19 +15,21 @@ pain_in_ass_tools=()
 # Some useful little functions:
 # check_for_apt_package(){
 # 	# $1 is our package to check:
-#     echo "                                      -- checking that $1 doesn't already exist"
-# 	if dpkg -s "$1" | grep -c "*not installed"; then
+# 	check_func=$(apt list --installed | grep -c $1)
+# 	echo "                                      -- checking that $1 doesn't already exist"
+# 	if [[ check_func -eq 0 ]]; then
 # 		installed=0
-# 	echo "                                      -- $1 not found, installing..."
+# 		echo "                                      -- $1 not found, installing..."
 # 	else
 # 		installed=1
-#     echo "                                      -- $1 already installed, skipping."
+#         echo "                                      -- $1 already installed, skipping."
 # 	fi
 # return $installed
 # }
+
 check_for_apt_package(){
 	# $1 is our package to check:
-	check_func=$(apt list --installed | grep -c $1)
+	check_func=$(apt list --installed 2>/dev/null | grep -c "^$1/")
 	echo "                                      -- checking that $1 doesn't already exist"
 	if [[ check_func -eq 0 ]]; then
 		installed=0

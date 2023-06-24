@@ -74,7 +74,7 @@ echo "                                 ---- checking that tools installed succes
 # done
 for t in ${installed_tools[@]}; do
 	# t_exists=$(dpkg -s $t | grep "install ok installed" -c)
-	t_exists=$(apt list --installed | grep -c $t)
+	t_exists=$(apt list --installed 2>/dev/null | grep -c "^$1/")
 
 	if [[ $t_exists -eq 0 ]]; then
 		echo "                                      -- ERROR: tool $t was not installed"
