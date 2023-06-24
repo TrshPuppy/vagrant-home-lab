@@ -44,7 +44,10 @@ install_apt_package(){
 }
 
 handle_golang(){
-	
+	# Check for golang:
+	# go_exists=$(go version | grep )
+
+	sudo ./install_golang.sh
 }
 
 cd /home/"$target_user"
