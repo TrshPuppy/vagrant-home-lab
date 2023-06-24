@@ -50,7 +50,7 @@ handle_vs_code(){
 	result_vs=$?
 
 	if [[ $result_vs -eq 0 ]]; then
-		#sudo apt install ./code_1.79.2-1686734195_amd64.deb
+		# From this resource: https://code.visualstudio.com/docs/setup/linux#_installation
 		sudo apt-get install wget gpg
 		wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 		sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
