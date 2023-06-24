@@ -12,9 +12,13 @@ version_req=$(curl -sSL "https://golang.org/dl/?mode=json")
 #               : '[^"]+' matches one of more characters which aren't double quotes
 current_go_version=$(echo "$version_req" | grep -oP '(?<="version": ")[^"]+' | head -n 1)
 
-check_for_go(){}
+check_for_go(){
+    #return true/false
+}
 
-install_go(){}
+install_go(){
+
+}
 
 extract_tarball(){
 
@@ -25,3 +29,9 @@ update_environment(){
 }
 
 clean_up(){}
+
+verify_install(){
+    #install true-false
+}
+
+check_for_go
