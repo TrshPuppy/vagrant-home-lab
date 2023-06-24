@@ -46,7 +46,7 @@ install_apt_package(){
 handle_golang(){
 	# Check for golang:
 	# go_exists=$(go version | grep )
-
+	echo "                                      -- installing golang..."                           
 	sudo ./install_golang.sh
 }
 
