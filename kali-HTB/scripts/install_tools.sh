@@ -42,7 +42,7 @@ return $installed
 }
 
 install_apt_package(){
-	sudo apt install $1 -y	
+	sudo apt install $1 -y 2>dev/null	
 }
 
 echo "                                 ---- installing tools..."
