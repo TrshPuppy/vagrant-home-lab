@@ -8,6 +8,7 @@ cd /home/vagrant
 declare -i tools_installed=0
 # Cuz I'm queen of making shit complicated, find out who our user is from a safe starting point:
 target_user=$(cat /etc/passwd | grep "puppy" | cut -d ":" -f 1)
+target_shell=$(echo $SHELL | cut -d "/" -f 3)
 tools_to_install=("git" "vim")
 
 pain_in_ass_tools=(handle_golang)
@@ -44,10 +45,8 @@ install_apt_package(){
 }
 
 handle_golang(){
-	# Check for golang:
-	# go_exists=$(go version | grep )
-echo "               -- installing golang..."                           
-	sudo ./install_golang.sh
+	echo "               -- installing golang..."                           
+	$target_shell /tmp/vagrant/shared-scripts/install_golang.sh $target_user
 }
 
 cd /home/"$target_user"
