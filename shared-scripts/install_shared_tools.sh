@@ -8,19 +8,49 @@ user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r
 echo "user= $user"
 shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
 echo "shell= $shell"
+declare -i tools_installed=0
 
 shared_tools=$(cat $configs_path/shared_tools.txt)
+
+check_for_apt_package(){
+	# $1 is our package to check:
+	declare -i check_func=$(apt list --installed 2>/dev/null | grep -c "^$1/")
+	echo "               -- checking that $1 doesn't already exist"
+	if [[ $check_func -eq 0 ]]; then
+		installed=0
+		echo "               -- $1 not found, installing..."
+	else
+		installed=1
+		echo "               -- $1 already installed, skipping."
+	fi
+	return $installed
+}
+
+install_apt_package(){
+	sudo apt install $1 -y 2>/dev/null
+}
 
 # Source profile
 cd /home/$user
 source .profile
 
 for row in $shared_tools; do
-	technique=$(echo $row | cut -d ":" -f 2)
+	tool=$( echo $row | cut -d ":" -f 1)
+	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
 	echo $technique
 
-	if [[ $technique == 'apt' ]]; then
-		echo apt
+	if [[ $technique == 'apt' ]]; then	
+		# Check for tool:
+		tool_present=check_for_apt_package $tool
+
+		if [[ $tool_present -eq 0 ]]; then
+			install_apt_package $tool
+			tools_installed+=1
+		else
+		continue
+		fi
+	else
+		$target_shell $technique $target_user	
 	fi
 done
 
