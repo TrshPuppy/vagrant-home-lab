@@ -1,0 +1,3 @@
+user:devpuppy
+home:/home/devpuppy
+shell:/bin/bash
