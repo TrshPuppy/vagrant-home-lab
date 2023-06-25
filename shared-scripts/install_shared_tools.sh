@@ -8,8 +8,6 @@ user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r
 echo "user= $user"
 shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
 echo "shell= $shell"
-# user_home="/home/$user"
-echo "home= $user_home"
 
 shared_tools=$(cat $configs_path/shared_tools.txt)
 
@@ -18,8 +16,12 @@ cd /home/$user
 source .profile
 
 for row in $shared_tools; do
-	tool=$(echo $row | cut -d ":" -f 1)
-	echo $tool
+	technique=$(echo $row | cut -d ":" -f 2)
+	echo $technique
+
+	if [[ $technique == 'apt' ]]; then
+		echo apt
+	fi
 done
 
 
