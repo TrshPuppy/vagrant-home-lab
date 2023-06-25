@@ -7,7 +7,7 @@
 		#	add cd /home/vagrant  to start and  end?
 
 # Banner:
-echo "                        -------- STARTING INSTALL_TOOLS.SH"
+echo " -------- STARTING INSTALL_TOOLS.SH"
 cd /home/vagrant
 
 # Some globals:
@@ -26,13 +26,13 @@ pain_in_ass_tools=(handle_vs_code)
 check_for_apt_package(){
 	# $1 is our package to check:
 	check_func=$(apt list --installed 2>/dev/null | grep -c "^$1/")
-	echo "                                      -- checking that $1 doesn't already exist"
+	echo "               -- checking that $1 doesn't already exist"
 	if [[ check_func -eq 0 ]]; then
 		installed=0
-		echo "                                      -- $1 not found, installing..."
+		echo "               -- $1 not found, installing..."
 	else
 		installed=1
-        echo "                                      -- $1 already installed, skipping."
+		echo "               -- $1 already installed, skipping."
 	fi
 return $installed
 }
@@ -63,7 +63,7 @@ handle_vs_code(){
 	fi	
 }
 
-echo "                                 ---- installing tools..."
+echo "          ---- installing tools..."
 cd $user_home
 
 for t in ${tools_to_install[@]}; do
@@ -79,36 +79,11 @@ for t in ${tools_to_install[@]}; do
 	fi
 done
 
-echo "                                 ---- installing pain in ass tools..."
+echo "          ---- installing pain in ass tools..."
 for pa in ${pain_in_ass_tools[@]}; do
 	"$pa"
 done
 
 #  Finish up:
-echo "                        -------- FINISHED: $tools_installed new tools installed."
+echo " -------- FINISHED: $tools_installed new tools installed."
 
-# # Add banner so we can tell what's happening:
-# echo "                        ---------- STARTING INSTALL_TOOLS.SH ----------"
-
-# # Ubuntu specific tools:
-# 	# A GUI:
-# echo "                                       installing desktop env..."
-# 	sudo apt install -y --no-install-recommends ubuntu-desktop
-
-# 	# Firefox:
-# echo "                                       installing Firefox..."
-# 	sudo apt install -y firefox
-
-# 	# VS Code:
-# echo "                                       installing VS Code..."
-# 	sudo apt install -y software-properties-common
-# 	sudo apt install -y apt-transporrt-https
-
-# 	sudo apt-get install -y wget gpg
-# 	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-# 	sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-# 	sudo sh -c 'echo "deb [arch=amd64, arm64, armhf, signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-# 	rm -f packages.microsoft.gpg
-
-# #  Finish up:
-# echo "                                     Finished: <number> new tools installed."
