@@ -27,7 +27,8 @@ check_for_apt_package(){
 	# $1 is our package to check:
 	check_func=$(apt list --installed 2>/dev/null | grep -c "^$1/")
 	echo "               -- checking that $1 doesn't already exist"
-	if [[ check_func -eq 0 ]]; then
+	
+	if [[ $check_func -eq 0 ]]; then # If this breaks change '$check_func' back to 'check_func'
 		installed=0
 		echo "               -- $1 not found, installing..."
 	else

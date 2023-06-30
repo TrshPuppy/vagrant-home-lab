@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "golang"
+echo "golang script"
 
 # # Banner:
 # echo "                  -------- STARTING INSTALL_GOLANG.SH"

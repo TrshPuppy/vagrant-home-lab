@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Banner:
 echo " -------- STARTING INSTALL_SHARED_TOOLS.SH"
@@ -13,9 +13,11 @@ declare -i tools_installed=0
 shared_tools=$(cat $configs_path/shared_tools.txt)
 
 check_for_apt_package(){
+	echo "			     -- current tool is apt, checking if installed...."
 	# $1 is our package to check:
-	declare -i check_func=$(apt list --installed 2>/dev/null | grep -c "^$1/")
+	declare -i check_func=$(sudo apt list --installed 2>/dev/null | grep -c "^$1/")
 	echo "               -- checking that $1 doesn't already exist"
+	
 	if [[ $check_func -eq 0 ]]; then
 		installed=0
 		echo "               -- $1 not found, installing..."
@@ -27,6 +29,7 @@ check_for_apt_package(){
 }
 
 install_apt_package(){
+	echo "			     -- install function."
 	sudo apt install $1 -y 2>/dev/null
 }
 
@@ -34,14 +37,16 @@ install_apt_package(){
 cd /home/$user
 source .profile
 
+echo "          ---- checking tools in shared_tools.txt..."
 for row in $shared_tools; do
-	tool=$( echo $row | cut -d ":" -f 1)
+	tool=$(echo $row | cut -d ":" -f 1)
 	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
-	echo $technique
+echo "               -- current tool is $tool, current technique is $technique"
 
 	if [[ $technique == 'apt' ]]; then	
 		# Check for tool:
-		tool_present=check_for_apt_package $tool
+		check_for_apt_package $tool
+		tool_present=$?
 
 		if [[ $tool_present -eq 0 ]]; then
 			install_apt_package $tool
@@ -50,6 +55,7 @@ for row in $shared_tools; do
 		continue
 		fi
 	else
+		echo "                 ELSE STATEMENT tool is $tool"
 		$target_shell $technique $target_user	
 	fi
 done
