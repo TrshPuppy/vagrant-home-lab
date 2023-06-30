@@ -35,7 +35,6 @@ install_apt_package(){
 }
 
 # We should correct our install context so it is the user's
-# Source profile
 cd /home/$user
 source .profile
 
