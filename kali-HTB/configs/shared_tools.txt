@@ -1,3 +1,4 @@
 golang:/tmp/vagrant/shared-scripts/install_golang.sh
 vim:apt
 git:apt
+make:apt
