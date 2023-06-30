@@ -9,28 +9,29 @@ echo "user= $user"
 shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
 echo "shell= $shell"
 declare -i tools_installed=0
+declare -i install_scripts_ran=0
 
 shared_tools=$(cat $configs_path/shared_tools.txt)
 
 check_for_apt_package(){
-	echo "			     -- current tool is apt, checking if installed...."
 	# $1 is our package to check:
-	declare -i check_func=$(sudo apt list --installed 2>/dev/null | grep -c "^$1/")
 	echo "               -- checking that $1 doesn't already exist"
+	declare -i check_func=$(sudo apt list --installed 2>/dev/null | grep -c "^$1/")
 	
 	if [[ $check_func -eq 0 ]]; then
 		installed=0
-		echo "               -- $1 not found, installing..."
+		echo "                  - $1 not found, installing..."
 	else
 		installed=1
-		echo "               -- $1 already installed, skipping."
+		echo "                  - $1 already installed, skipping."
 	fi
 	return $installed
 }
 
 install_apt_package(){
-	echo "			     -- install function."
+	#echo "			     -- install function."
 	sudo apt install $1 -y 2>/dev/null
+	tools_installed+=1
 }
 
 # Source profile
@@ -41,7 +42,6 @@ echo "          ---- checking tools in shared_tools.txt..."
 for row in $shared_tools; do
 	tool=$(echo $row | cut -d ":" -f 1)
 	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
-echo "               -- current tool is $tool, current technique is $technique"
 
 	if [[ $technique == 'apt' ]]; then	
 		# Check for tool:
@@ -55,12 +55,16 @@ echo "               -- current tool is $tool, current technique is $technique"
 		continue
 		fi
 	else
-		echo "                 ELSE STATEMENT tool is $tool"
-		$target_shell $technique $target_user	
+		echo "          ---- calling install script for $tool..."
+		$target_shell $technique $target_user
+		install_scripts_ran+=1
 	fi
 done
 
-
+# Finishing up:
+cd /home/vagrant
+echo -e " -------- FINISHED: $tools_installed tools installed via apt" 
+echo -e "          --------: & $install_scripts_ran install script(s) ran (check output for success)."
 
 
 # # Banner:
