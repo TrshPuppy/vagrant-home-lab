@@ -3,17 +3,17 @@
 # Banner:
 echo "                           STARTING INSTALL_GOLANG.SH -------- "
 
-# Some globals:
+# Make sure we're in the right place/ context:
 configs_path="/tmp/vagrant/configs"
 user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
 shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
+cd /home/$user
+source .profile
+
+# Some globals:
 declare -i go_present=$(go version 2>/dev/null | grep -c 'go')
 version_req=$(curl -sSL "https://golang.org/dl/?mode=json")
 current_go_version=$(echo "$version_req" | grep "go" | cut -d "\"" -f 4 | head -n 1)
-
-# Make sure we're in the right place/ context:
-cd /home/$user
-source .profile
 
 install_go(){
     # Install using current version:
