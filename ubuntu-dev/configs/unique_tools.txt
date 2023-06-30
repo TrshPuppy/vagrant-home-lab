@@ -1,0 +1,5 @@
+ubuntu-desktop:apt
+firefox:apt
+software-properties-common:apt 
+apt-transport-https:apt
+code:/tmp/vagrant/scripts/install_vscode.sh
