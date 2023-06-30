@@ -2,16 +2,16 @@
 
 # Banner:
 echo " -------- STARTING INSTALL_SHARED_TOOLS.SH"
+cd /home/vagrant
 
+# Some gobals:
 configs_path="/tmp/vagrant/configs"
 user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
-echo "user= $user"
 shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
-echo "shell= $shell"
+shared_tools=$(cat $configs_path/shared_tools.txt)
+
 declare -i tools_installed=0
 declare -i install_scripts_ran=0
-
-shared_tools=$(cat $configs_path/shared_tools.txt)
 
 check_for_apt_package(){
 	# $1 is our package to check:
@@ -34,6 +34,7 @@ install_apt_package(){
 	tools_installed+=1
 }
 
+# We should correct our install context so it is the user's
 # Source profile
 cd /home/$user
 source .profile
@@ -64,7 +65,7 @@ done
 # Finishing up:
 cd /home/vagrant
 echo -e " -------- FINISHED: $tools_installed tools installed via apt" 
-echo -e "          --------: & $install_scripts_ran install script(s) ran (check output for success)."
+echo -e "          --------: $install_scripts_ran install script(s) ran (check output for success)."
 
 
 # # Banner:
