@@ -1,4 +1,4 @@
-golang:install_golang.sh:go version:go
+golang:install_golang.sh:go:version
 vim:apt
 git:apt
 make:apt

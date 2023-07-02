@@ -12,6 +12,9 @@ shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '
 shared_tools=$(cat $configs_path/unique_tools.txt)
 declare -i error_count=0
 
+cd /home/$user
+source .profile
+
 # user="devpuppy"
 # user_home="/home/$user"
 
@@ -28,6 +31,34 @@ user_home_files=(".vimrc")
 # 				 "apt-transport-https")
 shared_tools=$(cat $configs_path/shared_tools.txt)
 unique_tools=$(cat $configs_path/unique_tools.txt)
+
+check_tools(){
+	# $1 should be tool
+	# $2 should be technique
+	# $3 is the current row
+	if [[ $2 == 'apt' ]]; then	
+		# Check for tool:
+		declare -i t_exists=$(apt list --installed 2>/dev/null | grep -c "^$1/")
+		
+		if [[ $t_exists -eq 0 ]]; then
+			echo "               -- ERROR: tool $1 was not installed"
+	 		error_count+=1	
+		else
+			echo "               -- tool $1 exists"
+		fi
+	else
+		command=$(echo $3 | cut -d ":" -f 4 | tr -d '\r')
+		g_rep=$(echo $3 | cut -d ":" -f 3 | tr -d '\r')
+		declare -i pain_in_ass_t_exists=$($g_rep $command 2>/dev/null | grep -c $g_rep)
+		
+		if [[ $pain_in_ass_t_exists -eq 0 ]]; then
+			echo "               -- ERROR: tool $1 was not installed"
+	 		error_count+=1	
+		else
+			echo "               -- tool $1 exists"
+		fi
+	fi
+}
 
 # Check for user and user directories:
 echo "          ---- checking for user config..."
@@ -79,26 +110,7 @@ for row in $shared_tools; do
 	tool=$(echo $row | cut -d ":" -f 1)
 	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
 
-	if [[ $technique == 'apt' ]]; then	
-		# Check for tool:
-		declare -i t_exists=$(apt list --installed 2>/dev/null | grep -c "^$tool/")
-		
-		if [[ $t_exists -eq 0 ]]; then
-			echo "               -- ERROR: tool $tool was not installed"
-	 		error_count+=1	
-		else
-			echo "               -- tool $t exists"
-	 		continue
-		fi
-	else
-		command=$(cat $configs_path/shared_tools.txt | grep $tool | cut -d ":" -f 3 | tr -d '\r')
-		g_rep=$(cat $configs_path/shared_tools.txt | grep $tool | cut -d ":" -f 4 | tr -d '\r')
-		echo "         COMMAND = $command"
-		echo "         GREP = $g_rep"
-
-		
-
-	fi
+	check_tools $tool $technique $row
 done
 # for t in ${installed_tools[@]}; do
 # 	# t_exists=$(dpkg -s $t | grep "install ok installed" -c)
