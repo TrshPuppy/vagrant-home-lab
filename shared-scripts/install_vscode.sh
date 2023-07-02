@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # Banner:
-echo "                           STARTING INSTALL_VSCODE.SH -------- "
+# echo "          ---- calling install script for $tool..."
+echo "          ---------------------------------------------------> "
+echo "                           STARTING INSTALL_VSCODE.SH <------- "
 
 # Make sure we're in the right place/ context:
 configs_path="/tmp/vagrant/configs"
@@ -15,17 +15,14 @@ source .profile
 # Some globals:
 check_for_apt_package(){
 	# $1 is our package to check:
-	echo "               -- checking that $1 doesn't already exist"
 	declare -i check_func=$(apt list --installed 2>/dev/null | grep -c "^$1/")
 	
 	if [[ $check_func -eq 0 ]]; then
 		installed=0
-		echo "                  - $1 not found, installing..."
 	else
 		installed=1
-		echo "                  - $1 already installed, skipping."
 	fi
-	return $installed
+return $installed
 }
 
 handle_vs_code(){
@@ -53,6 +50,7 @@ else
 fi
 
 echo "                                            FINISHED. --------"
+echo "          ---------------------------------------------------> "
 
 
 

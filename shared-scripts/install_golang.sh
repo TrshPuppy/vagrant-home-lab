@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Banner:
-echo "                           STARTING INSTALL_GOLANG.SH -------- "
+echo "          ---------------------------------------------------> "
+echo "                           STARTING INSTALL_GOLANG.SH <------- "
 
 # Make sure we're in the right place/ context:
 configs_path="/tmp/vagrant/configs"
@@ -66,3 +67,4 @@ else
 fi
 
 echo "                                            FINISHED. --------"
+echo "          ---------------------------------------------------> "
