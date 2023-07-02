@@ -41,10 +41,10 @@ check_tools(){
 		declare -i t_exists=$(apt list --installed 2>/dev/null | grep -c "^$1/")
 		
 		if [[ $t_exists -eq 0 ]]; then
-			echo "               -- ERROR: tool $1 was not installed"
+			echo "                  - ERROR: tool $1 was not installed"
 	 		error_count+=1	
 		else
-			echo "               -- tool $1 exists"
+			echo "                  - tool $1 exists"
 		fi
 	else
 		command=$(echo $3 | cut -d ":" -f 4 | tr -d '\r')
@@ -52,10 +52,14 @@ check_tools(){
 		declare -i pain_in_ass_t_exists=$($1 $command 2>/dev/null | grep -c $g_rep)
 		
 		if [[ $pain_in_ass_t_exists -eq 0 ]]; then
-			echo "               -- ERROR: tool $1 was not installed"
+			echo "                  - ERROR: tool $1 was not installed"
+			echo "     TOOL: $1"
+			echo "     GREP: $g_rep"
+			echo "     COMMAND: $command"
+			echo "     PAT:    $pain_in_ass_t_exists"
 	 		error_count+=1	
 		else
-			echo "               -- tool $1 exists"
+			echo "                  - tool $1 exists"
 		fi
 	fi
 }
@@ -106,12 +110,25 @@ fi
 echo "          ---- checking that tools installed successfully..."
 
 # Check shared tools:
+echo "               -- checking shared tools..."
 for row in $shared_tools; do
 	tool=$(echo $row | cut -d ":" -f 1)
 	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
 
 	check_tools $tool $technique $row
 done
+
+# Check unique tools:
+echo "               -- checking unique tools..."
+for row in $unique_tools; do
+	tool=$(echo $row | cut -d ":" -f 1)
+	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
+
+	check_tools $tool $technique $row
+done
+
+
+
 # for t in ${installed_tools[@]}; do
 # 	# t_exists=$(dpkg -s $t | grep "install ok installed" -c)
 # 	t_exists=$(apt list --installed 2>/dev/null | grep -c "^$t/")
