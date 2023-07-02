@@ -40,6 +40,7 @@ source .profile
 
 echo "          ---- checking tools in shared_tools.txt..."
 for row in $shared_tools; do
+	echo "ROW:::::::::: $row"
 	tool=$(echo $row | cut -d ":" -f 1)
 	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
 
