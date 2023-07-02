@@ -49,7 +49,7 @@ check_tools(){
 	else
 		command=$(echo $3 | cut -d ":" -f 4 | tr -d '\r')
 		g_rep=$(echo $3 | cut -d ":" -f 3 | tr -d '\r')
-		declare -i pain_in_ass_t_exists=$($g_rep $command 2>/dev/null | grep -c $g_rep)
+		declare -i pain_in_ass_t_exists=$($1 $command 2>/dev/null | grep -c $g_rep)
 		
 		if [[ $pain_in_ass_t_exists -eq 0 ]]; then
 			echo "               -- ERROR: tool $1 was not installed"

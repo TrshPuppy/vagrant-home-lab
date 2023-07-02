@@ -2,4 +2,4 @@ ubuntu-desktop:apt
 firefox:apt
 software-properties-common:apt
 apt-transport-https:apt
-code:/tmp/vagrant/shared-scripts/install_vscode.sh
+code:install_vscode.sh:x64:--version

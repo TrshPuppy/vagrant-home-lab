@@ -8,7 +8,7 @@ cd /home/vagrant
 configs_path="/tmp/vagrant/configs"
 user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
 shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
-shared_tools=$(cat $configs_path/unique_tools.txt)
+unique_tools=$(cat $configs_path/unique_tools.txt)
 
 declare -i tools_installed=0
 declare -i install_scripts_ran=0
@@ -38,9 +38,8 @@ install_apt_package(){
 cd /home/$user
 source .profile
 
-echo "          ---- checking tools in shared_tools.txt..."
-for row in $shared_tools; do
-	echo "ROW:::::::::: $row"
+echo "          ---- checking tools in unique_tools.txt..."
+for row in $unique_tools; do
 	tool=$(echo $row | cut -d ":" -f 1)
 	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
 
@@ -57,7 +56,7 @@ for row in $shared_tools; do
 		fi
 	else
 		echo "          ---- calling install script for $tool..."
-		$target_shell $technique $target_user
+		$target_shell "/tmp/vagrant/shared-scripts/$technique" $target_user
 		install_scripts_ran+=1
 	fi
 done
