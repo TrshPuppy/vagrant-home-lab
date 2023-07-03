@@ -2,3 +2,4 @@ go:install_golang.sh:go:version
 vim:apt
 git:apt
 make:apt
+nodejs:apt
