@@ -8,6 +8,7 @@ echo "                           STARTING INSTALL_GOLANG.SH <------- "
 configs_path="/tmp/vagrant/configs"
 user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
 shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
+
 cd /home/$user
 source .profile
 
@@ -17,20 +18,20 @@ version_req=$(curl -sSL "https://golang.org/dl/?mode=json")
 current_go_version=$(echo "$version_req" | grep "go" | cut -d "\"" -f 4 | head -n 1)
 
 install_go(){
-    # Install using current version:
+    # Install using current version
     echo "                             fetching tarball... ----"
-    wget "https://golang.org/dl/$current_go_version.linux-amd64.tar.gz" >/dev/null
+    wget "https://golang.org/dl/$current_go_version.linux-amd64.tar.gz" & wait
 }
 
 extract_tarball(){
     echo "                           extracting tarball... ----"    
-    sudo rm -rf /usr/local/go && \
-    tar -C /usr/local -xzf "$current_go_version.linux-amd64.tar.gz"
+    #sudo rm -rf /home/$user/gocode/go/
+    tar -C /home/$user/gocode -xzf "$current_go_version.linux-amd64.tar.gz"
 }
 
 update_environment(){
     echo "                         updating environment... ----"      
-    echo "PATH=\$PATH:/usr/local/go/bin" >> "/home/$user/.profile"
+    echo "PATH=\$PATH:/home/$user/gocode/go/bin" >> "/home/$user/.profile"
 
     cd /home/$user
     echo "                         sourcing .profile... --"
@@ -39,7 +40,7 @@ update_environment(){
 
 clean_up(){
     echo "                                  cleaning up... ----"
-    rm "$current_go_version.linux-amd64.tar.gz"
+    rm "/home/$user/gocode/$current_go_version.linux-amd64.tar.gz"
 }
 
 verify_install(){
@@ -57,7 +58,7 @@ verify_install(){
 echo "                              checking for go... ----"
 if [[ $go_present -eq 0 ]]; then
     echo '              go not installed. Continuing... --'
-     install_go
+     install_go & wait
      extract_tarball
      update_environment 
      clean_up 
