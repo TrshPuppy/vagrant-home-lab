@@ -3,6 +3,7 @@ bin
 embedded
 passy.txt
 */passy.txt
+/ubuntu-dev/tun
 
 # OS-specific
 .DS_Store

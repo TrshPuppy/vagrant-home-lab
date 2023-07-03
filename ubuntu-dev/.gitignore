@@ -1,6 +1,8 @@
 # Custom
 bin
 embedded
+/tun
+
 
 # OS-specific
 .DS_Store
