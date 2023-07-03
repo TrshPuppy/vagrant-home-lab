@@ -47,23 +47,23 @@ verify_install(){
 
     declare -i post_install=$(go version 2>/dev/null | grep -c 'go')
     if [[ $post_install -eq 1 ]]; then 
-        echo "                   go successfully installed. --"
+        echo '                   go successfully installed. --'
     else
-        echo "                        go failed to install. --"
+        echo '                        go failed to install. --'
     fi
 }
 
 # Start
 echo "                              checking for go... ----"
 if [[ $go_present -eq 0 ]]; then
-    echo "              go not installed. Continuing... --"
+    echo '              go not installed. Continuing... --'
      install_go
      extract_tarball
      update_environment 
      clean_up 
      verify_install
 else
-    echo "            go already installed. Skipping... --"
+    echo '            go already installed. Skipping... --'
 fi
 
 echo "                                            FINISHED. --------"

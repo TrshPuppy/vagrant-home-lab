@@ -56,7 +56,7 @@ for row in $shared_tools; do
 		fi
 	else
 		echo "          ---- calling install script for $tool..."
-		$target_shell $technique $target_user
+		$target_shell "/tmp/vagrant/shared-scripts/$technique" $target_user
 		install_scripts_ran+=1
 	fi
 done
