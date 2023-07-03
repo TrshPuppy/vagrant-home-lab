@@ -89,7 +89,10 @@ config.ssh.username
   # Dev lab specific:
     config.vm.provision "shell",
       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
-    
+
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/move_go_env.sh"
+       
 #                                  Provisioning End: -------- 
 
 #                         -------- Testing:
