@@ -3,6 +3,10 @@
 # vi: set ft=ruby :
 
 # Some variables you might want to change later:
+ # New User:
+ user = "trshpuppy"
+ user_home = "/home/$user"
+
 HOST_SHARED_SCRIPTS_DIR = "../shared-scripts"
 VM_SHARED_SCRIPTS_DIR = "/tmp/vagrant/shared-scripts"
 
@@ -12,16 +16,12 @@ VM_SHARED_CONFIGS_DIR = "/tmp/vagrant/shared-configs"
 HOST_CONFIG_DIR = "configs" 
 VM_CONFIG_DIR = "/tmp/vagrant/configs"
 
-HOST_TUN = "tun/code"
-VM_TUN = "/home/trshpuppy/tun"
+HOST_TUN = "tun"
+VM_TUN = "/$user_home/tun"
 
 HOST_SCRIPTS_DIR = "scripts"
 VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
 VM_SHELL_PATH = "/usr/bin/bash"
-
-  # New User:
-  user = "trshpuppy"
-  user_home = "/home/$user"
 
 #                         -------- START the Madness --------
 Vagrant.configure("2") do |config|
@@ -66,15 +66,15 @@ Vagrant.configure("2") do |config|
   end 
 #                                  VirtualBox End: --------
 
-#                         -------- TP Custom:
+#                         -------- SSH:
 
-config.ssh.username
+  config.ssh.username = "trshpuppy"
 	# SSH & X11 stuff and things:
     #	config.ssh.forward_x11 = true
 	#  config.ssh.host = "127.0.0.1"
 	#  config.ssh.port = 8008
 
-#                                  Custom End: --------
+#                         -------- SSH End:
 
 #                         -------- Provisioning:
   
