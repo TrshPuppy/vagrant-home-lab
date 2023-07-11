@@ -24,6 +24,9 @@ fi
 echo "          ---- adding to sudo group..."
 sudo usermod -a -G sudo $user
 
+echo "          ---- adding to vboxsf group..."
+sudo usermod -a -G vboxsf $user
+
 # Remove password file:
 echo "               -- removing pass file..."
 sudo rm /tmp/vagrant/shared-configs/passy.txt
