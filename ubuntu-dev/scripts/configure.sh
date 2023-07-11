@@ -13,7 +13,7 @@ cd /home/vagrant
 # Make a new user:
 echo "          ---- adding user..."
 # Make sure the user doesn't exist:
-check_for_user=$(cat /etc/passwd | grep -c $user)
+declare -i check_for_user=$(cat /etc/passwd | grep -c $user)
 if [[ $check_for_user -eq 1 ]]; then
 	echo "               -- user $user already exists...skipping..."
 else
