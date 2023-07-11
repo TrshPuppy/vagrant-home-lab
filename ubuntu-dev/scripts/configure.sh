@@ -2,7 +2,6 @@
 
 # Some nice globals:
 	user="trshpuppy"
-	# user_pass=$(cat /tmp/vagrant/shared-configs/passy.txt | mkpasswd --stdin)
 	user_pass=$(cat /tmp/vagrant/shared-configs/passy.txt)
 	user_home="/home/$user"
 

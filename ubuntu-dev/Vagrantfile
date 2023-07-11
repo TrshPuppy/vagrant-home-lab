@@ -4,8 +4,8 @@
 
 # Some variables you might want to change later:
  # New User:
- user = "trshpuppy"
- user_home = "/home/$user"
+ USER = "trshpuppy"
+ USER_HOME = "/home/#{USER}"
 
 HOST_SHARED_SCRIPTS_DIR = "../shared-scripts"
 VM_SHARED_SCRIPTS_DIR = "/tmp/vagrant/shared-scripts"
@@ -17,7 +17,7 @@ HOST_CONFIG_DIR = "configs"
 VM_CONFIG_DIR = "/tmp/vagrant/configs"
 
 HOST_TUN = "tun"
-VM_TUN = "/$user_home/tun"
+VM_TUN = "#{USER_HOME}/tun"
 
 HOST_SCRIPTS_DIR = "scripts"
 VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
@@ -45,8 +45,8 @@ Vagrant.configure("2") do |config|
   # Tun shared folder (for coding):
   config.vm.synced_folder HOST_TUN, VM_TUN,
     id: "tun",
-    owner: "trshpuppy",
-    group: "trshpuppy",
+    owner: USER,
+    group: USER,
     mount_options: ["dmode=775,fmode=664"]
   
 #                         -------- VirtualBox Config:
@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
 
 #                         -------- SSH:
 
-  #config.ssh.username = "trshpuppy"
+  #config.ssh.username = USER
 	# SSH & X11 stuff and things:
     #	config.ssh.forward_x11 = true
 	#  config.ssh.host = "127.0.0.1"
