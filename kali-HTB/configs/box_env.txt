@@ -1,0 +1,3 @@
+user:hakcypuppy
+home:/home/hakcypuppy
+shell:/bin/zsh

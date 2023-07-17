@@ -6,22 +6,63 @@ echo " -------- RUNNING TESTS"
 cd /home/vagrant
 
 # Some globals:
+configs_path="/tmp/vagrant/configs"
+user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
+shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
+shared_tools=$(cat $configs_path/unique_tools.txt)
 declare -i error_count=0
 
-user="devpuppy"
-user_home="/home/$user"
+cd /home/$user
+source .profile
+
+# user="devpuppy"
+# user_home="/home/$user"
 
 vag_user="vagrant"
 vag_home="/home/vagrant"
 
 user_home_files=(".vimrc")
-installed_tools=("git" 
-				 "vim" 
-				 "code" 
-				 "ubuntu-desktop" 
-				 "firefox" 
-				 "software-properties-common" 
-				 "apt-transport-https")
+# installed_tools=("git" 
+# 				 "vim" 
+# 				 "code" 
+# 				 "ubuntu-desktop" 
+# 				 "firefox" 
+# 				 "software-properties-common" 
+# 				 "apt-transport-https")
+shared_tools=$(cat $configs_path/shared_tools.txt)
+unique_tools=$(cat $configs_path/unique_tools.txt)
+
+check_tools(){
+	# $1 should be tool
+	# $2 should be technique
+	# $3 is the current row
+	if [[ $2 == 'apt' ]]; then	
+		# Check for tool:
+		declare -i t_exists=$(apt list --installed 2>/dev/null | grep -c "^$1/")
+		
+		if [[ $t_exists -eq 0 ]]; then
+			echo "                  - ERROR: tool $1 was not installed"
+	 		error_count+=1	
+		else
+			echo "                  - tool $1 exists"
+		fi
+	else
+		command=$(echo $3 | cut -d ":" -f 4 | tr -d '\r')
+		g_rep=$(echo $3 | cut -d ":" -f 3 | tr -d '\r')
+		declare -i pain_in_ass_t_exists=$($1 $command 2>/dev/null | grep -c $g_rep)
+		
+		if [[ $pain_in_ass_t_exists -eq 0 ]]; then
+			echo "                  - ERROR: tool $1 was not installed"
+			echo "     TOOL: $1"
+			echo "     GREP: $g_rep"
+			echo "     COMMAND: $command"
+			echo "     PAT:    $pain_in_ass_t_exists"
+	 		error_count+=1	
+		else
+			echo "                  - tool $1 exists"
+		fi
+	fi
+}
 
 # Check for user and user directories:
 echo "          ---- checking for user config..."
@@ -36,8 +77,8 @@ else
 	error_count+=1
 fi
 
-echo "          ---- checking user is sudo..."
 # Check that user is in sudo group:
+echo "          ---- checking user is sudo..."
 if [[ "$user_exists" == "true" ]]; then
 	exists_in_sudoers=$(cat /etc/group | grep "sudo" | grep $user -c)
 
@@ -49,8 +90,8 @@ if [[ "$user_exists" == "true" ]]; then
 	fi
 fi
 
-echo "          ---- checking for config  files in user home..."
 # Check for config files in user home dir:
+echo "          ---- checking for config  files in user home..."
 if [[ "$user_exists" == "true" ]]; then
 	for f in ${user_home_files[@]}; do
 		f_exists=$(ls -a $user_home | grep $f -c)
@@ -65,20 +106,43 @@ if [[ "$user_exists" == "true" ]]; then
 	done
 fi
 
-echo "          ---- checking that tools installed successfully..."
 # Check that tools were installed:	
-for t in ${installed_tools[@]}; do
-	# t_exists=$(dpkg -s $t | grep "install ok installed" -c)
-	t_exists=$(apt list --installed 2>/dev/null | grep -c "^$t/")
+echo "          ---- checking that tools installed successfully..."
 
-	if [[ $t_exists -eq 0 ]]; then
-		echo "               -- ERROR: tool $t was not installed"
-		error_count+=1	
-	else
-		echo "               -- tool $t exists"
-		continue
-	fi
+# Check shared tools:
+echo "               -- checking shared tools..."
+for row in $shared_tools; do
+	tool=$(echo $row | cut -d ":" -f 1)
+	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
+
+	check_tools $tool $technique $row
 done
+
+# Check unique tools:
+echo "               -- checking unique tools..."
+for row in $unique_tools; do
+	tool=$(echo $row | cut -d ":" -f 1)
+	technique=$(echo $row | cut -d ":" -f 2 | tr -d '\r')
+
+	check_tools $tool $technique $row
+done
+
+
+
+# for t in ${installed_tools[@]}; do
+# 	# t_exists=$(dpkg -s $t | grep "install ok installed" -c)
+# 	t_exists=$(apt list --installed 2>/dev/null | grep -c "^$t/")
+
+# 	if [[ $t_exists -eq 0 ]]; then
+# 		echo "               -- ERROR: tool $t was not installed"
+# 		error_count+=1	
+# 	else
+# 		echo "               -- tool $t exists"
+# 		continue
+# 	fi
+# done
+
+# Check unique tools:
 
 # Check vagrant home directory:
 	# eh.... mayber later

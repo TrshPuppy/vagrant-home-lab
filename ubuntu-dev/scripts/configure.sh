@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Some nice globals:
-	user="devpuppy"
-	# user_pass=$(cat /tmp/vagrant/shared-configs/passy.txt | mkpasswd --stdin)
+	user="trshpuppy"
 	user_pass=$(cat /tmp/vagrant/shared-configs/passy.txt)
 	user_home="/home/$user"
 
@@ -13,7 +12,7 @@ cd /home/vagrant
 # Make a new user:
 echo "          ---- adding user..."
 # Make sure the user doesn't exist:
-check_for_user=$(cat /etc/passwd | grep -c $user)
+declare -i check_for_user=$(cat /etc/passwd | grep -c $user)
 if [[ $check_for_user -eq 1 ]]; then
 	echo "               -- user $user already exists...skipping..."
 else
@@ -24,6 +23,9 @@ fi
 # Add user to sudo group:
 echo "          ---- adding to sudo group..."
 sudo usermod -a -G sudo $user
+
+echo "          ---- adding to vboxsf group..."
+sudo usermod -a -G vboxsf $user
 
 # Remove password file:
 echo "               -- removing pass file..."

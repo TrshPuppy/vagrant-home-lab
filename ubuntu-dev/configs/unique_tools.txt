@@ -1,0 +1,5 @@
+ubuntu-desktop:apt
+firefox:apt
+software-properties-common:apt
+apt-transport-https:apt
+code:install_vscode.sh:empty:--user-data-dir

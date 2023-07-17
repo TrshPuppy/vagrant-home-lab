@@ -3,6 +3,12 @@
 # vi: set ft=ruby :
 
 # Some variables you might want to change later:
+ # New User:
+ USER = "trshpuppy"
+ USER_HOME = "/home/#{USER}"
+ UID="1004"
+ GID="1004"
+
 HOST_SHARED_SCRIPTS_DIR = "../shared-scripts"
 VM_SHARED_SCRIPTS_DIR = "/tmp/vagrant/shared-scripts"
 
@@ -12,13 +18,12 @@ VM_SHARED_CONFIGS_DIR = "/tmp/vagrant/shared-configs"
 HOST_CONFIG_DIR = "configs" 
 VM_CONFIG_DIR = "/tmp/vagrant/configs"
 
+HOST_TUN = "tun"
+VM_TUN = "#{USER_HOME}/tun"
+
 HOST_SCRIPTS_DIR = "scripts"
 VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
 VM_SHELL_PATH = "/usr/bin/bash"
-
-  # New User:
-  user = "devpuppy"
-  user_home = "/home/$user"
 
 #                         -------- START the Madness --------
 Vagrant.configure("2") do |config|
@@ -38,6 +43,13 @@ Vagrant.configure("2") do |config|
   
   config.vm.synced_folder HOST_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
   config.vm.synced_folder HOST_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
+
+  # Tun shared folder (for coding):
+  config.vm.synced_folder HOST_TUN, VM_TUN,
+    id: "tun",
+    owner: USER,
+    group: USER,
+    mount_options: ["uid=#{UID},gid=#{GID},dmode=775,fmode=664,umask=775"]
   
 #                         -------- VirtualBox Config:
   config.vm.provider "virtualbox" do |vb|
@@ -56,13 +68,15 @@ Vagrant.configure("2") do |config|
   end 
 #                                  VirtualBox End: --------
 
-#                         -------- TP Custom:
+#                         -------- SSH:
+
+  #config.ssh.username = USER
 	# SSH & X11 stuff and things:
     #	config.ssh.forward_x11 = true
 	#  config.ssh.host = "127.0.0.1"
 	#  config.ssh.port = 8008
 
-#                                  Custom End: --------
+#                         -------- SSH End:
 
 #                         -------- Provisioning:
   
@@ -81,7 +95,10 @@ Vagrant.configure("2") do |config|
   # Dev lab specific:
     config.vm.provision "shell",
       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
-    
+
+    config.vm.provision "shell",
+      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/move_go_env.sh"
+       
 #                                  Provisioning End: -------- 
 
 #                         -------- Testing:
