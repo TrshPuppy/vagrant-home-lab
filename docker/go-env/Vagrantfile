@@ -7,7 +7,6 @@
  USER = "trshpuppy"
  USER_HOME = "/home/#{USER}"
 
-
 #                         -------- START the Madness --------
 Vagrant.configure("2") do |config|
     #
