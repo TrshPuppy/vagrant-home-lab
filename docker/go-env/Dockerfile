@@ -34,11 +34,10 @@ ARG USER=trshpuppy
 ARG USER_UID=1000
 ARG USER_GID=1000
 
-#RUN groupadd -f --gid ${USER_GID}
-# RUN useradd -s "/bin/bash" --uid $USER_UID --gid $USER_GID -m $USER
-RUN useradd -m -s /bin/bash ${USER}
-RUN echo "$USER ALL=\(root\) NOPASSWD:ALL" > /etc/sudoers.d/${USER}
-RUN chmod 0440 /etc/sudoers.d/${USER}
+RUN useradd -m -s /bin/bash ${USER} \
+    && echo "$USER ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USER} \
+    && usermod -a -G sudo ${USER} \
+    && chmod 0440 /etc/sudoers.d/${USER} 
 
 #------ Golang Things:
 # RUN mkdir -p /$GOPATH/pkg && chown -R $USER /$GOPATH

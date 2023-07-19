@@ -1,6 +1,7 @@
 # Custom
 bin
 embedded
+configs/p.txt
 
 # DOCKER:
 # Docker project generated files to ignore
