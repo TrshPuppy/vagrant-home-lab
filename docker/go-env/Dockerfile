@@ -50,7 +50,7 @@ RUN useradd -m -s /bin/bash ${USER} \
 # E.g. "which golangci-lint" should report "/go/bin" not "/app/bin" (where VSCode will place it).
 # https://github.com/go-modules-by-example/index/blob/master/010_tools/README.md#walk-through
 
-WORKDIR /home/$USER
+WORKDIR /home/${USER}
 # WORKDIR reference: https://docs.docker.com/engine/reference/builder/#workdir
 #
 #... Go env should look like:
@@ -59,6 +59,11 @@ WORKDIR /home/$USER
 #             
 RUN mkdir repos \
     && mkdir go
+
+RUN chown -R $USER_UID:$USER_GID repos \
+    && chmod -R 755 repos
+RUN chown -R $USER_UID:$USER_GID go \
+    && chmod -R 755 go
 
 # The base image has golang installed in /usr/local/go
 #... We want to move that...
@@ -70,14 +75,19 @@ RUN chown -R $USER_UID:$USER_GID /usr/local/go \
     && mv /usr/local/go /home/$USER/go/go
 
 # Set our Go env variables:
-ENV GOROOT /home/$USER/go/go/bin
-ENV GOPATH /home/$USER/repos
+ENV GOROOT /home/${USER}/go/go/bin
+ENV GOPATH /home/${USER}/repos
 #ENV PATH $PATH:$GOROOT
 
 # Update user's profile (probably overkill):
-RUN echo "GOPATH=/home/$USER/repos" >> /home/$USER/.profile \
-    && echo "GOROOT=/home/$USER/go/go/bin" >> /home/$USER/.profile \
-    && echo "PATH=\$PATH:\$GOROOT" >> /home/$USER/.profile
+RUN echo "GOPATH=/home/$USER/repos" >> /home/${USER}/.profile \
+    && echo "GOROOT=/home/$USER/go/go/bin" >> /home/${USER}/.profile \
+    && echo "PATH=\$PATH:\$GOROOT" >> /home/${USER}/.profile
+
+
+#...... Add some files/ config files:
+COPY configs/.vimrc /home/${USER}
+COPY configs/.gitconfig /home/${USER}
 
 # Enter the Dragon:
 ENTRYPOINT ["/bin/bash"]
