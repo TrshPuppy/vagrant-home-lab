@@ -3,7 +3,8 @@ bin
 embedded
 passy.txt
 */passy.txt
-/ubuntu-dev/tun
+ubuntu-dev/tun
+docker/nakama
 
 # OS-specific
 .DS_Store
