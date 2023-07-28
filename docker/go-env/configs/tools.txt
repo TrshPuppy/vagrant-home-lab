@@ -1,3 +1,4 @@
 make:apt
 vim:apt
 git:apt
+sudo:apt
