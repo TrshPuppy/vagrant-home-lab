@@ -1,0 +1,10 @@
+[user]
+        name = Rose
+        email = trshpuppy@proton.me
+[filter "lfs"]
+        clean = git-lfs clean -- %f
+        smudge = git-lfs smudge -- %f
+        process = git-lfs filter-process
+        required = true
+[alias]
+    kermit = git commit

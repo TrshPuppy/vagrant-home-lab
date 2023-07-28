@@ -1,0 +1,21 @@
+# 
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Some variables you might want to change later:
+ # New User:
+ USER = "trshpuppy"
+ USER_HOME = "/home/#{USER}"
+
+#                         -------- START the Madness --------
+Vagrant.configure("2") do |config|
+    #
+    # Use our Dockerfile (in the same directory) to build our image,
+    # When we `vagrant up`  we should use the  `--provider=docker`
+    # flag to tell Vagrant to build from the dockerfile
+    #
+    config.vm.provider "docker" do |d|
+        d.build_dir = "."
+    end
+
+end
