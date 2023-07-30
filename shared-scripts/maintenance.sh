@@ -14,6 +14,9 @@ echo "          ---- updating apt packages..."
 sudo apt update && sudo apt upgrade -y &>/dev/null
 echo "          ---- finished: apt packages updated/ upgraded."
 
+# Clean up potentially interupted packages:
+sudo dpkg --configure -a &>/dev/null
+
 # Finishing up:
 cd /home/vagrant
 echo " -------- FINISHED: apt package maintenance complete."
