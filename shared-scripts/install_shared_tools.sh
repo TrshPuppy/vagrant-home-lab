@@ -7,8 +7,6 @@ source .profile
 
 # Some gobals:
 configs_path="/tmp/vagrant/configs"
-# user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
-# shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
 shared_tools=$(cat $configs_path/shared_tools.txt)
 
 declare -i tools_installed=0

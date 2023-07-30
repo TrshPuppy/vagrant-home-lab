@@ -1,18 +1,13 @@
 #!/bin/bash
 
 # Banner:
-# echo "          ---- calling install script for $tool..."
 echo "          ---------------------------------------------------> "
 echo "                           STARTING INSTALL_VSCODE.SH <------- "
 
-# Make sure we're in the right place/ context:
 configs_path="/tmp/vagrant/configs"
-# user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
-# shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
 cd /home/vagrant
 source .profile
 
-# Some globals:
 check_for_apt_package(){
 	# $1 is our package to check:
 	declare -i check_func=$(apt list --installed 2>/dev/null | grep -c "^$1/")
@@ -49,6 +44,7 @@ else
     echo "        vscode already installed. Skipping... --"
 fi
 
+cd /home/vagrant
 echo "                                            FINISHED. --------"
 echo "          ---------------------------------------------------> "
 

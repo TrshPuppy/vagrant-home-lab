@@ -15,5 +15,6 @@ sudo apt update & sudo apt upgrade -y
 echo "          ---- finished: apt packages updated/ upgraded."
 
 # Finishing up:
-echo " -------- FINISHED: apt package maintenance complete."
 cd /home/vagrant
+echo " -------- FINISHED: apt package maintenance complete."
+
