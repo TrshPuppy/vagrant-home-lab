@@ -4,10 +4,10 @@
 
 # Some variables you might want to change later:
  # New User:
- USER = "trshpuppy"
- USER_HOME = "/home/#{USER}"
- UID="1004"
- GID="1004"
+#  USER = "trshpuppy"
+#  USER_HOME = "/home/#{USER}"
+#  UID="1004"
+#  GID="1004"
 
 HOST_SHARED_SCRIPTS_DIR = "../shared-scripts"
 VM_SHARED_SCRIPTS_DIR = "/tmp/vagrant/shared-scripts"
@@ -18,8 +18,8 @@ VM_SHARED_CONFIGS_DIR = "/tmp/vagrant/shared-configs"
 HOST_CONFIG_DIR = "configs" 
 VM_CONFIG_DIR = "/tmp/vagrant/configs"
 
-HOST_TUN = "tun"
-VM_TUN = "#{USER_HOME}/tun"
+# HOST_TUN = "tun"
+# VM_TUN = "#{USER_HOME}/tun"
 
 HOST_SCRIPTS_DIR = "scripts"
 VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
@@ -45,11 +45,11 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder HOST_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
 
   # Tun shared folder (for coding):
-  config.vm.synced_folder HOST_TUN, VM_TUN,
-    id: "tun",
-    owner: USER,
-    group: USER,
-    mount_options: ["uid=#{UID},gid=#{GID},dmode=775,fmode=664,umask=775"]
+  # config.vm.synced_folder HOST_TUN, VM_TUN,
+  #   id: "tun",
+  #   owner: USER,
+  #   group: USER,
+  #   mount_options: ["uid=#{UID},gid=#{GID},dmode=775,fmode=664,umask=775"]
   
 #                         -------- VirtualBox Config:
   config.vm.provider "virtualbox" do |vb|
@@ -61,50 +61,37 @@ Vagrant.configure("2") do |config|
 	# Customize the amount of memory on the VM:
 	vb.memory = "32000"
 	vb.cpus = 6
-
-	# This next thing doesn't seem to be working (for now):
-	# vb.customize ["modifyvm", :id, "--cpuexecutioncap","80"]
 	
   end 
 #                                  VirtualBox End: --------
-
-#                         -------- SSH:
-
-  #config.ssh.username = USER
-	# SSH & X11 stuff and things:
-    #	config.ssh.forward_x11 = true
-	#  config.ssh.host = "127.0.0.1"
-	#  config.ssh.port = 8008
-
-#                         -------- SSH End:
 
 #                         -------- Provisioning:
   
   # We want to add our configure files before we install tools (probably):
   # Config scripts:
     config.vm.provision "shell",   
-      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/configure.sh"
+      inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/configure.sh"
   
   # Shared Scripts:
   #  config.vm.provision "shell",
   #    inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
     
-    config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/install_shared_tools.sh"
+  #   config.vm.provision "shell",
+  #     inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/install_shared_tools.sh"
 
-  # Dev lab specific:
-    config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
+  # # Dev lab specific:
+  #   config.vm.provision "shell",
+  #     inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
 
-    config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/move_go_env.sh"
+  #   config.vm.provision "shell",
+  #     inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/move_go_env.sh"
        
 #                                  Provisioning End: -------- 
 
 #                         -------- Testing:
 
-  # Script to run after provisioning to see if everything worked:
-    config.vm.provision "shell",
-    inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/post_build_tests.sh"
+  # # Script to run after provisioning to see if everything worked:
+  #   config.vm.provision "shell",
+  #   inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/post_build_tests.sh"
 
 end
