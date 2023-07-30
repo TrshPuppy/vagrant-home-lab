@@ -3,11 +3,12 @@
 # Banner:
 echo " -------- STARTING INSTALL_TOOLS.SH"
 cd /home/vagrant
+souce .profile
 
 # Some gobals:
 configs_path="/tmp/vagrant/configs"
-user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
-shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
+# user=$(cat $configs_path/box_env.txt | grep "user" | cut -d ":" -f 2 | tr -d '\r')
+# shell=$(cat $configs_path/box_env.txt | grep "shell" | cut -d ":" -f 2 | tr -d '\r')
 unique_tools=$(cat $configs_path/unique_tools.txt)
 
 declare -i tools_installed=0
@@ -33,10 +34,6 @@ install_apt_package(){
 	sudo apt install $1 -y 2>/dev/null
 	tools_installed+=1
 }
-
-# We should correct our install context so it is the user's
-cd /home/$user
-source .profile
 
 echo "          ---- checking tools in unique_tools.txt..."
 for row in $unique_tools; do
