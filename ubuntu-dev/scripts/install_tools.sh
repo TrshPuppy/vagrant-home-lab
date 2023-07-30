@@ -3,7 +3,7 @@
 # Banner:
 echo " -------- STARTING INSTALL_TOOLS.SH"
 cd /home/vagrant
-souce .profile
+source .profile
 
 # Some gobals:
 configs_path="/tmp/vagrant/configs"
