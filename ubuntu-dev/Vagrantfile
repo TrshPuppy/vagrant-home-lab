@@ -82,6 +82,7 @@ Vagrant.configure("2") do |config|
     inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
   else
     # Put custom provisioning here:
+    next
   end
        
 #          ---- Provisioning End:
