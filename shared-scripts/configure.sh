@@ -22,13 +22,6 @@ done
 echo " 		    ---- config files moved"
 echo " -------- FINISHED."
 
-
-
-
-
-
-
-
 # cd /home/vagrant
 
 # # Make a new user:
