@@ -49,9 +49,8 @@ Vagrant.configure("2") do |config|
 #                                  VirtualBox End: --------
 
 #                         -------- Provisioning:
-  
   # We want to add our configure files before we install tools (probably):
-  # Config scripts:
+  # Config script:
   config.vm.provision "shell",   
     inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/configure.sh"
 
@@ -68,11 +67,4 @@ Vagrant.configure("2") do |config|
     inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
        
 #                                  Provisioning End: -------- 
-
-#                         -------- Testing:
-
-  # # Script to run after provisioning to see if everything worked:
-  #   config.vm.provision "shell",
-  #   inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/post_build_tests.sh"
-
 end
