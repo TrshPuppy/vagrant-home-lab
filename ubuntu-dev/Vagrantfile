@@ -3,6 +3,18 @@
 # vi: set ft=ruby :
 
 # Some variables you might want to change later:
+# Vagrant:
+VAGRANT_BASE = "ubuntu/focal64"
+VAGRANT_UPDATE = true
+MOUNT_FOLDERS = true
+
+# VirtualBox:
+VBOX_NAME = "ubuntu-dev"
+VBOX_MEM = "32000"
+VBOX_CPUS = "6"
+VBOX_GUI = false
+
+# Mounted folders:
 HOST_SHARED_SCRIPTS_DIR = "../shared-scripts"
 VM_SHARED_SCRIPTS_DIR = "/tmp/vagrant/shared-scripts"
 
@@ -20,31 +32,33 @@ VM_SHELL_PATH = "/usr/bin/bash"
 Vagrant.configure("2") do |config|
 
   # This is our box:
-  config.vm.box = "ubuntu/focal64" 
+  config.vm.box = VAGRANT_BASE
 
   # We want it to update: 
-  config.vm.box_check_update = true
+  config.vm.box_check_update = VAGRANT_UPDATE
 
   # We don't want the VM to access our Vfile:
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Give our box some config files, to make these real nice and automated:
-  config.vm.synced_folder HOST_SHARED_SCRIPTS_DIR, VM_SHARED_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false 
-  config.vm.synced_folder HOST_SHARED_CONFIGS_DIR, VM_SHARED_CONFIGS_DIR, SharedFoldersEnableSymlinksCreate: false 
+  if MOUNT_FOLDERS
+    config.vm.synced_folder HOST_SHARED_SCRIPTS_DIR, VM_SHARED_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false 
+    config.vm.synced_folder HOST_SHARED_CONFIGS_DIR, VM_SHARED_CONFIGS_DIR, SharedFoldersEnableSymlinksCreate: false 
   
-  config.vm.synced_folder HOST_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
-  config.vm.synced_folder HOST_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
+    config.vm.synced_folder HOST_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
+    config.vm.synced_folder HOST_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
+  end
   
 #          ---- VirtualBox Config:
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "ubuntu-dev"
+    vb.name = VBOX_NAME
 		
 	  # Display the VirtualBox GUI when booting the machine
-	  vb.gui = true
+	  vb.gui = VBOX_GUI
 	 
 	  # Customize the amount of memory on the VM:
-	  vb.memory = "32000"
-	  vb.cpus = 6
+	  vb.memory = VBOX_MEM
+	  vb.cpus = VBOX_CPUS
   end 
 #          ---- VirtualBox End:
 
