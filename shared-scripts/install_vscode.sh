@@ -23,14 +23,14 @@ return $installed
 handle_vs_code(){
     echo "                         installing vscode... --"
     # From this resource: https://code.visualstudio.com/docs/setup/linux#_installation
-    sudo apt-get install wget gpg
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg \
-    && sudo install -D -o vagrant -g vagrant -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg \
+    sudo apt-get install wget gpg \
+    && wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg \
+    && sudo install -D -o vagrant -g vagrant -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg &>/dev/null \
     && sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list' \
     && rm -f packages.microsoft.gpg
 
-    sudo apt update 2>/dev/null \
-    && sudo apt install code 2>/dev/null
+    sudo apt update -y &>/dev/null \
+    && sudo apt install code &>/dev/null
 }
 
 echo "                          checking for vscode... ----"
@@ -39,7 +39,7 @@ code_present=$?
 
 if [[ $code_present -eq 0 ]]; then
     echo "          vscode not installed. Continuing... --"
-    handle_vs_code
+    handle_vs_code & wait
 else
     echo "        vscode already installed. Skipping... --"
 fi
