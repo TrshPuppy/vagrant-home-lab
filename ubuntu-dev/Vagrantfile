@@ -16,7 +16,7 @@ HOST_SCRIPTS_DIR = "scripts"
 VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
 VM_SHELL_PATH = "/usr/bin/bash"
 
-#                         -------- START the Madness --------
+# -------- START THE MADNESS:
 Vagrant.configure("2") do |config|
 
   # This is our box:
@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder HOST_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
   config.vm.synced_folder HOST_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
   
-#                         -------- VirtualBox Config:
+#          ---- VirtualBox Config:
   config.vm.provider "virtualbox" do |vb|
     vb.name = "ubuntu-dev"
 		
@@ -46,9 +46,9 @@ Vagrant.configure("2") do |config|
 	  vb.memory = "32000"
 	  vb.cpus = 6
   end 
-#                                  VirtualBox End: --------
+#          ---- VirtualBox End:
 
-#                         -------- Provisioning:
+#          ---- Provisioning:
   # We want to add our configure files before we install tools (probably):
   # Config script:
   config.vm.provision "shell",   
@@ -66,5 +66,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell",
     inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
        
-#                                  Provisioning End: -------- 
+#          ---- Provisioning End:
+# -------- MADNESS FINISHED.
 end
