@@ -28,7 +28,7 @@ check_for_apt_package(){
 }
 
 install_apt_package(){
-	sudo apt install $1 -y 2>/dev/null
+	sudo apt install $1 -y &>/dev/null
 	tools_installed+=1
 }
 

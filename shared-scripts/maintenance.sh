@@ -6,12 +6,12 @@ cd /home/vagrant
 
 # Autoremove in case we left some dumb shiznit behind:
 echo "          ---- purging unkempt packages..."
-sudo apt autoremove --purge
+sudo apt autoremove --purge &>/dev/null
 echo "          ---- finished: apt packages purged."
 
 # Update and Upgrade:
 echo "          ---- updating apt packages..."
-sudo apt update & sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y &>/dev/null
 echo "          ---- finished: apt packages updated/ upgraded."
 
 # Finishing up:
