@@ -84,10 +84,16 @@ RUN echo "GOPATH=/home/$USER/repos" >> /home/${USER}/.profile \
     && echo "GOROOT=/home/$USER/go/go" >> /home/${USER}/.profile \
     && echo "PATH=\$PATH:\$GOROOT/bin" >> /home/${USER}/.profile
 
+# Mount Volume so files persist past container life:
+#... test file:
+RUN echo "tiddies" > /home/${USER}/repos/test.txt
+VOLUME /home/${USER}/repos
+
 #...... Add some files/ config files:
 COPY configs/.vimrc /home/${USER}
 COPY configs/.gitconfig /home/${USER}
 
 EXPOSE 8080
+
 # Enter the Dragon:
 ENTRYPOINT ["/bin/bash"]
