@@ -75,7 +75,7 @@ RUN chown -R $USER_UID:$USER_GID /usr/local/go \
     && mv /usr/local/go /home/$USER/go/go
 
 # Set our Go env variables:
-ENV GOROOT /home/${USER}/go/go/bin
+ENV GOROOT /home/${USER}/go/go
 ENV GOPATH /home/${USER}/repos
 #ENV PATH $PATH:$GOROOT
 
