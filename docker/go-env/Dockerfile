@@ -77,13 +77,12 @@ RUN chown -R $USER_UID:$USER_GID /usr/local/go \
 # Set our Go env variables:
 ENV GOROOT /home/${USER}/go/go
 ENV GOPATH /home/${USER}/repos
-#ENV PATH $PATH:$GOROOT
+ENV PATH $PATH:$GOROOT/bin:
 
 # Update user's profile (probably overkill):
 RUN echo "GOPATH=/home/$USER/repos" >> /home/${USER}/.profile \
     && echo "GOROOT=/home/$USER/go/go" >> /home/${USER}/.profile \
     && echo "PATH=\$PATH:\$GOROOT/bin" >> /home/${USER}/.profile
-
 
 #...... Add some files/ config files:
 COPY configs/.vimrc /home/${USER}
