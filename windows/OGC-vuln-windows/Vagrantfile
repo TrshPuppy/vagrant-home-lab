@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+#                         -------- START the Madness --------
+Vagrant.configure("2") do |config|
+
+  # This is our box:
+  config.vm.box = "overgrowncarrot1/TrshPuppy1"
+  config.vm.box_check_update = false
+
+  # We don't want the VM to access our Vfile:
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+#                         -------- VirtualBox Config:
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "OGC-vuln-windows"
+
+          # Display the VirtualBox GUI when booting the machine
+          vb.gui = true
+
+          # Customize the amount of memory on the VM:
+          vb.memory = "16000"
+          vb.cpus = 1
+  end
+#                                  VirtualBox End: --------
+end
