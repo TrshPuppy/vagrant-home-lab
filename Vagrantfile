@@ -1,77 +1,107 @@
+# 
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
+# ------------------
+#   Don't use this Vfile, it's
+#   a template for the VMs which
+#   live here
+# ------------------
+
+# Some variables you might want to change later:
+# Vagrant:
+VAGRANT_BASE = ""
+VAGRANT_UPDATE = false
+MOUNT_FOLDERS = false
+
+# VirtualBox:
+VBOX_NAME = ""
+VBOX_MEM = ""
+VBOX_CPUS = ""
+VBOX_GUI = false
+
+# VBox Networking
+#   Adapter1: should be set to 'Nat-Network' w/ name "pentest-arena"
+NIC_FLAG = "--nic1"
+NIC_TYPE = "natnetwork"
+
+NAT_NET_FLAG = "--nat-network1"
+NAT_NET_NAME = ""
+
+# Mounted folders:
+HOST_SHARED_SCRIPTS_DIR = "" # point at shared-scripts dir
+VM_SHARED_SCRIPTS_DIR = "/tmp/vagrant/shared-scripts"
+
+HOST_SHARED_CONFIGS_DIR = "" # point at shared-configs dir
+VM_SHARED_CONFIGS_DIR = "/tmp/vagrant/shared-configs"
+
+HOST_CONFIG_DIR = "configs" # each box dir should have a subdir called "configs"
+VM_CONFIG_DIR = "/tmp/vagrant/configs"
+
+HOST_SCRIPTS_DIR = "scripts" # each box sid should have a subdir called "scripts"
+VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
+VM_SHELL_PATH = "/usr/bin/bash" # change if needed per distro
+
+# -------- START THE MADNESS:
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
+    # This is our box:
+    config.vm.box = VAGRANT_BASE
+    config.vm.box_check_update = VAGRANT_UPDATE
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "hashicorp/bionic64"
+    # Networking:
+    config.vm.provider :virtualbox do |vb|
+        vb.customize ["modifyvm", :id, NIC_FLAG, NIC_TYPE]
+        vb.customize ["modifyvm", :id, NAT_NET_FLAG, NAT_NET_NAME]
+    end
 
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
+    # We don't want the VM to access our Vfile:
+    config.vm.synced_folder ".", "/vagrant", disabled: true
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+    # Give our box some config files, to make these real nice and automated:
+    if MOUNT_FOLDERS
+        config.vm.synced_folder HOST_SHARED_SCRIPTS_DIR, VM_SHARED_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false 
+        config.vm.synced_folder HOST_SHARED_CONFIGS_DIR, VM_SHARED_CONFIGS_DIR, SharedFoldersEnableSymlinksCreate: false 
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+        config.vm.synced_folder HOST_CONFIG_DIR, VM_CONFIG_DIR, SharedFoldersEnableSymlinksCreate: false
+        config.vm.synced_folder HOST_SCRIPTS_DIR, VM_SCRIPTS_DIR, SharedFoldersEnableSymlinksCreate: false
+    end
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+    #          ---- VirtualBox Config:
+    config.vm.provider :virtuablbox do |vb|
+        vb.name = VBOX_NAME
+            
+        # Display the VirtualBox GUI when booting the machine
+        vb.gui = VBOX_GUI
+        
+        # Customize the amount of memory on the VM:
+        vb.memory = VBOX_MEM
+        vb.cpus = VBOX_CPUS
+    end 
+    #          ---- VirtualBox End:
 
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
+    #          ---- Provisioning:
 
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  # We want to add our configure files before we install tools (probably):
+    if MOUNT_FOLDERS
+        # Config script:
+        config.vm.provision "shell",   
+        inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/configure.sh"
 
-  # Disable the default share of the current code directory. Doing this
-  # provides improved isolation between the vagrant box and your host
-  # by making sure your Vagrantfile isn't accessable to the vagrant box.
-  # If you use this you may want to enable additional shared subfolders as
-  # shown above.
-  # config.vm.synced_folder ".", "/vagrant", disabled: true
+        # Shared Scripts:
+        config.vm.provision "shell",
+        inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/install_shared_tools.sh"
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
+        # CVE lab specific:
+        config.vm.provision "shell",
+        inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
+        # Clean up and maintenance:
+        config.vm.provision "shell",
+        inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
+    else
+        # Put custom provisioning here:
+        next
+    end       
+    #          ---- Provisioning End:
+    # -------- MADNESS FINISHED.
 end
