@@ -7,7 +7,7 @@ source .profile
 
 # Some gobals:
 configs_path="/tmp/vagrant/configs"
-shared_tools=$(cat $configs_path/shared_tools.txt)
+shared_tools=$(cat $configs_path/shared_tools.txt &>/dev/null)
 
 declare -i tools_installed=0
 declare -i install_scripts_ran=0
