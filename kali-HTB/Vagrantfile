@@ -16,10 +16,6 @@ HOST_SCRIPTS_DIR = "scripts"
 VM_SCRIPTS_DIR = "/tmp/vagrant/scripts"
 VM_SHELL_PATH = "/usr/bin/zsh"
 
-  # New User:
-  user = "hakcypuppy"
-  user_home = "/home/$user"
-
 #                         -------- START the Madness --------
 Vagrant.configure("2") do |config|
 
@@ -43,26 +39,14 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.name = "kali-HTB"
 		
-	# Display the VirtualBox GUI when booting the machine
-	vb.gui = true
+	  # Display the VirtualBox GUI when booting the machine
+	  vb.gui = true
 	 
-	# Customize the amount of memory on the VM:
-	vb.memory = "32000"
-	vb.cpus = 6
-
-	# This next thing doesn't seem to be working (for now):
-	# vb.customize ["modifyvm", :id, "--cpuexecutioncap","80"]
-	
+	  # Customize the amount of memory on the VM:
+	  vb.memory = "32000"
+	  vb.cpus = 6	
   end 
 #                                  VirtualBox End: --------
-
-#                         -------- TP Custom:
-	# SSH & X11 stuff and things:
-    #	config.ssh.forward_x11 = true
-	#  config.ssh.host = "127.0.0.1"
-	#  config.ssh.port = 8008
-
-#                                  Custom End: --------
 
 #                         -------- Provisioning:
  
@@ -71,28 +55,28 @@ Vagrant.configure("2") do |config|
 
   # Config scripts:
     config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/configure.sh"
+      inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/configure.sh"
 
-  # Shared Scripts:
-    config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
+#   # Shared Scripts:
+#     config.vm.provision "shell",
+#       inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/maintenance.sh"
 
-    config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/install_shared_tools.sh"
+#     config.vm.provision "shell",
+#       inline: "#{VM_SHELL_PATH} #{VM_SHARED_SCRIPTS_DIR}/install_shared_tools.sh"
    
-  # Kali lab specific:
-    config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
+#   # Kali lab specific:
+#     config.vm.provision "shell",
+#       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_tools.sh"
 
-    config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_pmk.sh"
+#     config.vm.provision "shell",
+#       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/install_pmk.sh"
 
-#                                  Provisioning End: -------- 
+# #                                  Provisioning End: -------- 
 
-#                         -------- Testing:
+# #                         -------- Testing:
 
-  # Script to run after provisioning to see if everything worked:
-    config.vm.provision "shell",
-      inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/post_build_tests.sh"
+#   # Script to run after provisioning to see if everything worked:
+#     config.vm.provision "shell",
+#       inline: "#{VM_SHELL_PATH} #{VM_SCRIPTS_DIR}/post_build_tests.sh"
 
 end

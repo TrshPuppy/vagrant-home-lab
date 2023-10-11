@@ -7,4 +7,10 @@
         process = git-lfs filter-process
         required = true
 [alias]
-    kermit = git commit
+        kermit = git commit
+        gs = git status
+        ga = git add
+        gaa = git add .
+        gp = git push
+        gb = git branch
+        gc = git checkout
