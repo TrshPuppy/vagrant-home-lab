@@ -21,12 +21,11 @@ VBOX_CPUS = ""
 VBOX_GUI = false
 
 # VBox Networking
-#   Adapter1: should be set to 'Nat-Network' w/ name "pentest-arena"
 NIC_FLAG = "--nic1"
 NIC_TYPE = "natnetwork"
 
 NAT_NET_FLAG = "--nat-network1"
-NAT_NET_NAME = ""
+NAT_NET_NAME = ""             # Set this to the NAT network you want 
 
 # Mounted folders:
 HOST_SHARED_SCRIPTS_DIR = "" # point at shared-scripts dir
