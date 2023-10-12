@@ -5,6 +5,7 @@ passy.txt
 */passy.txt
 ubuntu-dev/tun
 docker/nakama
+iso
 
 # OS-specific
 .DS_Store
