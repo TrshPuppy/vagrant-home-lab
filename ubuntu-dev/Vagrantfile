@@ -1,4 +1,3 @@
-
 # # 
 # # -*- mode: ruby -*-
 # # vi: set ft=ruby :
@@ -44,7 +43,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_check_update = VAGRANT_UPDATE
 
   # Don't sync Vagrant folder:
-  config.vm.synced_folder ".", "/vagrant", disabled: trueFALSE
+  config.vm.synced_folder ".", "/vagrant", disabled: false
 
   # Set the VM hostname
   config.vm.hostname = VM_HOSTNAME
@@ -72,7 +71,8 @@ Vagrant.configure("2") do |config|
     sudo apt-get install -y virtualbox-guest-dkms
     
     # Mount the ISO
-    sudo mount -o loop '/tmp/vagrant/linuxmint-21.2-xfce-64bit.iso' /mnt
+    sudo mount -o rw,exec,loop '/tmp/vagrant/iso/linuxmint-21.2-xfce-64bit.iso' /mnt
+    chmod -R 700 /mnt
 
     # Install Mint
     sudo /mnt/casper/vmlinuz file=/cdrom/preseed/linuxmint.seed boot=casper only-ubiquity quiet splash ---
