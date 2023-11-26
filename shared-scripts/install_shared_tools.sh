@@ -6,8 +6,8 @@ cd /home/vagrant
 source .profile
 
 # Some gobals:
-configs_path="/tmp/vagrant/configs"
-shared_tools=$(cat $configs_path/shared_tools.txt &>/dev/null)
+configs_path="/tmp/vagrant/configs" # where our shared_tools.txt is kept
+shared_tools=$(cat $configs_path/shared_tools.txt &>/dev/null) # creates a list of shared_tools
 
 declare -i tools_installed=0
 declare -i install_scripts_ran=0
